@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <item android:drawable="@color/white" />
+
+        <item android:drawable="@mipmap/logox75"
+            android:top="-160dp"
+            android:gravity="center"
+            />
+
+        <item android:drawable="@mipmap/textox9"
+            android:width="240dp"
+            android:height="120dp"
+            android:gravity="center"
+            android:top="160dp"/>
+
+</layer-list>

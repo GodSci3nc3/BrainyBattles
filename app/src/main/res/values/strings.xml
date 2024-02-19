@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">BrainyBattles(2)</string>
+    <string name="social">No tienes amigos todavía</string>
+    <string name="login">Inicia sesión</string>
+    <string name="register">Regístrate para poder jugar</string>
+    <string name="nombre">Ingresa tu nombre</string>
+    <string name="pass">Contraseña</string>
+    <string name="cuberotating">cuberotating</string>
+    <string name="correo">Correo</string>
+</resources>
