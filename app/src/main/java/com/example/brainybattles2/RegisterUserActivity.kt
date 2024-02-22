@@ -11,6 +11,8 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import org.json.JSONException
+import org.json.JSONObject
 
 
 class RegisterUserActivity : AppCompatActivity() {
@@ -45,12 +47,31 @@ class RegisterUserActivity : AppCompatActivity() {
     }
 
 
- fun register(){
+fun register(){
     val URL = "http://192.168.0.20/BrainyBattles/inserction.php"
     val queue = Volley.newRequestQueue(this)
     
     val r = object :  StringRequest(Request.Method.POST,URL, Response.Listener<String> { response ->
-        Toast.makeText(this,"$response", Toast.LENGTH_LONG).show()
+        Toast.makeText(this, response, Toast.LENGTH_LONG).show()
+
+        var i = Intent(this, MainActivity::class.java)
+        try {
+            val jsonResponse = JSONObject(response)
+
+            val nickname = jsonResponse.getString("nickname")
+            val correo = jsonResponse.getString("correo")
+
+
+            i.putExtra("nickname", nickname.toString())
+            i.putExtra("correo", correo.toString())
+
+            Toast.makeText(this,"Bienvenido, $nickname", Toast.LENGTH_SHORT).show()
+            startActivity(i)
+
+        } catch (e: JSONException) {
+            // Handle JSON parsing error
+            Toast.makeText(this, "Datos incorrectos", Toast.LENGTH_SHORT).show()
+        }
         
     }, Response.ErrorListener { error ->
         Toast.makeText(this,"Ha habido un error $error", Toast.LENGTH_LONG).show()
