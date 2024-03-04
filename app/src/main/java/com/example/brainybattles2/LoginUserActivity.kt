@@ -1,13 +1,18 @@
 package com.example.brainybattles2
 
+import android.animation.ArgbEvaluator
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.ContactsContract.CommonDataKinds.Website.URL
 import android.view.View
+import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.app.ActivityOptionsCompat
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.Response
@@ -24,35 +29,113 @@ class LoginUserActivity : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(R.style.regilog)
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login_user)
+
+        window.sharedElementEnterTransition.duration = 1000
+
+
+        //Animaciones de inicio
+        val loginbutton = findViewById<Button>(R.id.loginregisterbutton)
+        val registerbutton = findViewById<TextView>(R.id.textView16)
+
         val name = findViewById<EditText>(R.id.username)
         val email = findViewById<EditText>(R.id.email)
         val pass = findViewById<EditText>(R.id.pass)
 
-        val loginbutton = findViewById<TextView>(R.id.textView14)
+        loginbutton.setOnClickListener {
+          startActivity(Intent(this,MainActivity::class.java))
+           /* login(email.text.toString(), name.text.toString(), pass.text.toString())*/
+        }
+        registerbutton.setOnClickListener {
+            
+            val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                this, registerbutton, "sharedButtonTransition"
+            )
+
+            val intent = Intent(this, RegisterUserActivity::class.java)
+            startActivity(intent, options.toBundle())
+        }
+
+
+
+        /*
+
+        import android.animation.ArgbEvaluator
+import android.animation.ValueAnimator
+import android.content.Intent
+import android.os.Bundle
+import android.view.View
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityOptionsCompat
+
+class LoginActivity : AppCompatActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.login_user)
+
+        window.sharedElementEnterTransition.duration = 1000
+
+        val loginbutton = findViewById<Button>(R.id.loginregisterbutton)
         val registerbutton = findViewById<TextView>(R.id.textView16)
+        val backgroundView = findViewById<View>(R.id.backgroundview)
+
+        val startColors = intArrayOf(
+            resources.getColor(R.color.blue_start, theme),
+            resources.getColor(R.color.blue_end, theme)
+        )
+
+        val endColors = intArrayOf(
+            resources.getColor(R.color.green_start, theme),
+            resources.getColor(R.color.green_end, theme)
+        )
+
+        val colorAnimator = ValueAnimator().apply {
+            setObjectValues(*startColors)
+            setEvaluator(ArgbEvaluator())
+            addUpdateListener { animator ->
+                backgroundView.setBackgroundColor(animator.animatedValue as Int)
+            }
+            duration = 1000
+        }
+
+        val name = findViewById<EditText>(R.id.username)
+        val email = findViewById<EditText>(R.id.email)
+        val pass = findViewById<EditText>(R.id.pass)
 
         loginbutton.setOnClickListener {
             login(email.text.toString(), name.text.toString(), pass.text.toString())
         }
+
         registerbutton.setOnClickListener {
-            register()
+            colorAnimator.setIntValues(*endColors)
+            colorAnimator.start()
+
+            val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                this, registerbutton, "sharedButtonTransition"
+            )
+
+            val intent = Intent(this, RegisterUserActivity::class.java)
+            startActivity(intent, options.toBundle())
         }
-
-
     }
-    private fun register(){
-        val i = Intent(this, RegisterUserActivity::class.java)
-        startActivity(i)
+}
+
+         */
+
+
+
     }
 
 
    fun login(email: String, pass: String, name:String){
 
-        val URL = "http://192.168.137.202/BrainyBattles/login.php"
+        val URL = "http://192.168.137.23/BrainyBattles/login.php"
         val queue:RequestQueue = Volley.newRequestQueue(this)
         val i = Intent(this, MainActivity::class.java)
 

@@ -22,13 +22,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <ImageView
-                    android:id="@+id/imageView9"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <View
+                    android:id="@+id/View9"
+                    android:layout_width="match_parent"
+                    android:layout_height="170dp"
+
                     android:adjustViewBounds="true"
+                    android:background="@drawable/arc_2"
                     android:scaleType="fitXY"
-                    android:src="@mipmap/top_background3"
+
+
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -37,23 +40,47 @@
                     android:id="@+id/imageView10"
                     android:layout_width="120dp"
                     android:layout_height="120dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/imageView9"
-                    app:layout_constraintEnd_toEndOf="@+id/imageView9"
-                    app:layout_constraintStart_toStartOf="@+id/imageView9"
-                    app:layout_constraintTop_toBottomOf="@+id/imageView9"
-                    tools:srcCompat="@mipmap/profile" />
+                    app:layout_constraintBottom_toBottomOf="@+id/View9"
+                    app:layout_constraintEnd_toEndOf="@+id/View9"
+                    app:layout_constraintStart_toStartOf="@+id/View9"
+                    app:layout_constraintTop_toBottomOf="@+id/View9"
+                    android:src="@mipmap/profile" />
+
+                <ImageView
+                    android:id="@+id/imageView11"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginBottom="8dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/imageView10"
+                    app:layout_constraintEnd_toEndOf="@+id/imageView10"
+                    android:src="@mipmap/lapiz" />
 
                 <EditText
                     android:id="@+id/username"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:inputType="textPersonName"
-                    android:text="Nombre de usuario"
 
+                    android:text="Nombre de usuario"
                     android:textSize="25sp"
                     android:textStyle="bold"
+
                     app:layout_constraintEnd_toEndOf="@+id/imageView10"
                     app:layout_constraintStart_toStartOf="@+id/imageView10"
+                    app:layout_constraintTop_toBottomOf="@+id/imageView10" />
+
+                <Button
+                    android:id="@+id/imageView14"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+
+
+
+                    android:contentDescription="@string/setting"
+                    android:background="@mipmap/lapizx2"
+                    app:layout_constraintBottom_toBottomOf="@+id/username"
+                    app:layout_constraintStart_toEndOf="@+id/username"
                     app:layout_constraintTop_toBottomOf="@+id/imageView10" />
 
                 <EditText
@@ -61,8 +88,9 @@
                     style="@style/Widget.Material3.AutoCompleteTextView.FilledBox"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:editable="false"
+                    android:enabled="false"
                     android:inputType="textEmailAddress"
-
                     android:text="Correo electrónico"
                     android:textSize="20sp"
                     app:layout_constraintBottom_toBottomOf="@+id/username"
@@ -90,6 +118,24 @@
                         android:drawablePadding="20dp"
                         android:paddingStart="20dp"
                         android:text="@string/setting"
+                        android:textAlignment="viewStart" />
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/button2"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="32dp"
+                        android:layout_marginBottom="10dp"
+                        android:elevation="200dp"
+                        android:padding="10dp"
+                        android:background="@drawable/profilebtn_background"
+                        android:backgroundTint="@color/darkred"
+                        android:drawableStart="@mipmap/advertencia"
+                        android:drawablePadding="20dp"
+                        android:paddingStart="20dp"
+                        android:text="@string/delete"
+                        android:textColor="@color/white"
                         android:textAlignment="viewStart" />
                 </LinearLayout>
 

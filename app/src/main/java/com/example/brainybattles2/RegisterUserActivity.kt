@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.app.ActivityOptionsCompat
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
@@ -22,18 +23,30 @@ class RegisterUserActivity : AppCompatActivity() {
     var contraseña:EditText?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(R.style.regilog)
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.register_user)
+
+        window.sharedElementEnterTransition.duration = 1000
+
+
         nombre = findViewById<EditText>(R.id.username)
         correo = findViewById<EditText>(R.id.email)
         contraseña = findViewById<EditText>(R.id.pass)
-        var registerbutton = findViewById<TextView>(R.id.textView14)
+
+
+        var registerbutton = findViewById<TextView>(R.id.loginregisterbutton)
         var loginbutton = findViewById<TextView>(R.id.textView16)
 
+
         loginbutton.setOnClickListener {
-            login()
+
+            val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                this, loginbutton, "sharedButtonTransition"
+            )
+
+            val intent = Intent(this, LoginUserActivity::class.java)
+            startActivity(intent, options.toBundle())
         }
         registerbutton.setOnClickListener {
             register()
@@ -48,13 +61,12 @@ class RegisterUserActivity : AppCompatActivity() {
 
 
 fun register(){
-    val URL = "http://192.168.0.20/BrainyBattles/inserction.php"
+    val URL = "http://192.168.137.23/BrainyBattles/inserction.php"
     val queue = Volley.newRequestQueue(this)
-    
-    val r = object :  StringRequest(Request.Method.POST,URL, Response.Listener<String> { response ->
-        Toast.makeText(this, response, Toast.LENGTH_LONG).show()
+    var i = Intent(this, MainActivity::class.java)
 
-        var i = Intent(this, MainActivity::class.java)
+
+    val r = object :  StringRequest(Request.Method.POST,URL, Response.Listener<String> { response ->
         try {
             val jsonResponse = JSONObject(response)
 

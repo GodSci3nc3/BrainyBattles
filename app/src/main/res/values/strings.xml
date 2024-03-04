@@ -8,4 +8,5 @@
     <string name="cuberotating">cuberotating</string>
     <string name="setting">Configuración</string>
     <string name="correo">Correo</string>
+    <string name="delete">Eliminar la cuenta</string>
 </resources>
