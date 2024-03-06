@@ -61,7 +61,7 @@ class RegisterUserActivity : AppCompatActivity() {
 
 
 fun register(){
-    val URL = "http://192.168.137.23/BrainyBattles/inserction.php"
+    val URL = "http://192.168.0.20/BrainyBattles/inserction.php"
     val queue = Volley.newRequestQueue(this)
     var i = Intent(this, MainActivity::class.java)
 

@@ -70,18 +70,18 @@
                     app:layout_constraintStart_toStartOf="@+id/imageView10"
                     app:layout_constraintTop_toBottomOf="@+id/imageView10" />
 
-                <Button
-                    android:id="@+id/imageView14"
+                <ImageButton
+                    android:id="@+id/button5"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
+                    android:padding="8dp"
 
-
-
-                    android:contentDescription="@string/setting"
                     android:background="@mipmap/lapizx2"
+
                     app:layout_constraintBottom_toBottomOf="@+id/username"
                     app:layout_constraintStart_toEndOf="@+id/username"
-                    app:layout_constraintTop_toBottomOf="@+id/imageView10" />
+                    app:layout_constraintTop_toBottomOf="@+id/imageView10"
+                    app:layout_constraintVertical_bias="0.516" />
 
                 <EditText
                     android:id="@+id/email"

@@ -1,10 +1,8 @@
-package com.example.brainybattles2
-
 import android.app.Dialog
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Window
 import android.widget.Button
@@ -12,158 +10,124 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.example.brainybattles2.R
 import com.example.brainybattles2.databinding.ActivityProfileBinding
-
 
 class ProfileUserActivity : AppCompatActivity() {
 
-    lateinit var binding: ActivityProfileBinding
-    var nombre: EditText?=null
-    var correo: EditText?=null
-    var config: Button?=null
+    private lateinit var binding: ActivityProfileBinding
+    private lateinit var userProfile: UserProfile
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding= ActivityProfileBinding.inflate(layoutInflater)
+        binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
-
-        var username = intent.getStringExtra("nickname").toString()
+        // Obtener datos de la intención
+        val username = intent.getStringExtra("nickname").toString()
         val email = intent.getStringExtra("correo").toString()
 
+        // Inicializar el perfil del usuario
+        userProfile = UserProfile(username, email, this)
 
-        nombre = findViewById(R.id.username)
-        correo = findViewById(R.id.email)
-        config = findViewById(R.id.button)
+        // Configurar la interfaz de usuario
+        userProfile.configureUI()
 
-        val name : Button = findViewById((R.id.imageView14))
-        val img : ImageView = findViewById((R.id.imageView11))
-        val delete : Button = findViewById(R.id.button2)
-
-        nombre?.setText(username)
-        correo?.setText(email)
-
-        delete.setOnClickListener {val message :String? = "Aviso: ¡Esto eliminará su cuenta permanentemente!"
-        dialog(message, email)}
-
-
-        name.setOnClickListener {val message :String? = "¡Personalice su nombre de usuario cuántas veces desee!"
-            val data = "nickname"
-            edit_profile(message, email, data, username)}
-
+        // Manejar clics en botones
+        binding.button2.setOnClickListener { userProfile.showDeleteDialog() }
+        binding.button5.setOnClickListener { userProfile.showEditNameDialog() }
     }
 
-    private fun dialog(message: String?, email: String) {
-        val dialog = Dialog(this)
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setCancelable(false)
-        dialog.setContentView(R.layout.dialog_layout)
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+    // Clase para representar el perfil del usuario
+    private class UserProfile(
+        private var username: String,
+        private val email: String,
+        private val context: Context
+    ) {
 
-        val notice   :   TextView = dialog.findViewById(R.id.notice)
-        val pass    :   EditText = dialog.findViewById(R.id.editTextTextPassword)
-        val access  :   Button = dialog.findViewById(R.id.button4)
-        val back  :   Button = dialog.findViewById(R.id.button3)
-
-
-        notice.text = message
-
-        back.setOnClickListener {
-           dialog.dismiss()
-        }
-        access.setOnClickListener {
-            goDelete(email, pass.text.toString())
-        }
-        dialog.show()
-
-    }
-
-    private fun edit_profile(message: String?, email: String, data: String, username:String):String? {
-        val dialog = Dialog(this)
-        var upgrade: String?=null
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setCancelable(false)
-        dialog.setContentView(R.layout.edit_profile_layout)
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
-        val notice   :   TextView = dialog.findViewById(R.id.notice)
-        val name    :   EditText = dialog.findViewById(R.id.editTextText)
-        val pass    :   EditText = dialog.findViewById(R.id.editTextTextPassword)
-        val access  :   Button = dialog.findViewById(R.id.button4)
-        val back  :   Button = dialog.findViewById(R.id.button3)
-
-
-        notice.text = message
-
-        back.setOnClickListener {
-            dialog.dismiss()
+        fun configureUI() {
+            binding.username.setText(username)
+            binding.email.setText(email)
         }
 
-        access.setOnClickListener {
-        upgrade = editprofile(email, pass.text.toString(), data, name.text.toString())
-
-
+        fun showDeleteDialog() {
+            val message = "Aviso: ¡Esto eliminará su cuenta permanentemente!"
+            DialogHelper.showDialog(context, message) { password -> deleteAccount(password) }
         }
 
-        dialog.show()
-        return upgrade
-    }
-
-    fun goDelete(email: String, pass: String){
-        val URL = "http://192.168.0.20/BrainyBattles/delete.php"
-        val queue = Volley.newRequestQueue(this)
-        var r = object : StringRequest(Request.Method.POST,URL, Response.Listener { response ->
-            if(response == "Tu cuenta ha sido eliminada") {
-                startActivity( Intent(this, RegisterUserActivity::class.java))
-            }
-
-            Toast.makeText(this, response, Toast.LENGTH_SHORT).show()
-        }, Response.ErrorListener { error->
-            Toast.makeText(this,"$error" , Toast.LENGTH_SHORT).show()
-
-        })
-        {
-            override fun getParams(): MutableMap<String, String>? {
-                val parameters = HashMap<String, String>()
-
-                parameters.put("correo", email)
-                parameters.put("contraseña", pass)
-
-                return parameters
+        fun showEditNameDialog() {
+            val message = "¡Personalice su nombre de usuario cuántas veces desee!"
+            DialogHelper.showEditProfileDialog(context, message) { newUsername ->
+                editUsername(newUsername)
             }
         }
-        queue.add(r)
+
+        private fun deleteAccount(password: String) {
+            // Lógica para eliminar la cuenta
+        }
+
+        private fun editUsername(newUsername: String) {
+            // Lógica para editar el nombre de usuario
+            username = newUsername
+            configureUI()
+        }
     }
 
-    fun editprofile(email: String, pass: String, data:String, update: String): String? {
-        val URL = "http://192.168.0.20/BrainyBattles/modify.php"
-        val queue = Volley.newRequestQueue(this)
-        var upgrade: String?=null
+    // Clase de ayuda para manejar diálogos
+    private object DialogHelper {
 
-        val r = object: StringRequest(Request.Method.POST,URL, Response.Listener { response ->
-                Toast.makeText(this, "Los cambios han sido guardados con éxito", Toast.LENGTH_SHORT).show()
-                    upgrade = response
-            },
-            Response.ErrorListener {error ->
-            Toast.makeText(this, "$error", Toast.LENGTH_SHORT).show()
-            }) {
-            override fun getParams(): MutableMap<String, String>? {
-            val parameters = HashMap<String, String>()
-                parameters.put("correo", email)
-                parameters.put("contraseña", pass)
-                parameters.put("data", data)
-                parameters.put("update", update)
+        fun showDialog(context: Context, message: String, callback: (password: String) -> Unit) {
+            val dialog = createDialog(context, message)
+            val passwordEditText = dialog.findViewById<EditText>(R.id.editTextTextPassword)
+            val accessButton = dialog.findViewById<Button>(R.id.button4)
 
-                return parameters
+            accessButton.setOnClickListener {
+                val password = passwordEditText.text.toString()
+                callback(password)
+                dialog.dismiss()
+            }
+
+            dialog.show()
         }
-        }
-        queue.add(r)
 
-        return  upgrade
+        fun showEditProfileDialog(context: Context, message: String, callback: (newUsername: String) -> Unit) {
+            val dialog = createDialog(context, message)
+            val upgradeEditText = dialog.findViewById<EditText>(R.id.editTextText)
+            val accessButton = dialog.findViewById<Button>(R.id.button4)
+
+            accessButton.setOnClickListener {
+                val newUsername = upgradeEditText.text.toString()
+                callback(newUsername)
+                dialog.dismiss()
+            }
+
+            dialog.show()
+        }
+
+        private fun createDialog(context: Context, message: String): Dialog {
+            val dialog = Dialog(context)
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.setCancelable(false)
+            dialog.setContentView(R.layout.dialog_layout)
+            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+            val notice: TextView = dialog.findViewById(R.id.notice)
+            val passwordEditText: EditText = dialog.findViewById(R.id.editTextTextPassword)
+            val accessButton: Button = dialog.findViewById(R.id.button4)
+            val backButton: Button = dialog.findViewById(R.id.button3)
+
+            notice.text = message
+
+            backButton.setOnClickListener {
+                dialog.dismiss()
+            }
+
+            return dialog
+        }
     }
-
 }

@@ -45,7 +45,9 @@ class LoginUserActivity : AppCompatActivity() {
         val pass = findViewById<EditText>(R.id.pass)
 
         loginbutton.setOnClickListener {
-          startActivity(Intent(this,MainActivity::class.java))
+            login("prueba@gmail.com", "123", "arturo")
+            startActivity(Intent(this,MainActivity::class.java))
+
            /* login(email.text.toString(), name.text.toString(), pass.text.toString())*/
         }
         registerbutton.setOnClickListener {
@@ -135,7 +137,7 @@ class LoginActivity : AppCompatActivity() {
 
    fun login(email: String, pass: String, name:String){
 
-        val URL = "http://192.168.137.23/BrainyBattles/login.php"
+        val URL = "http://192.168.0.20/BrainyBattles/login.php"
         val queue:RequestQueue = Volley.newRequestQueue(this)
         val i = Intent(this, MainActivity::class.java)
 
