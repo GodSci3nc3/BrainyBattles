@@ -16,7 +16,7 @@ import org.json.JSONException
 import org.json.JSONObject
 
 
-class RegisterUserActivity : AppCompatActivity() {
+class RegisterUserActivity : MainClass() {
 
     var nombre:EditText?=null
     var correo:EditText?=null
@@ -61,7 +61,7 @@ class RegisterUserActivity : AppCompatActivity() {
 
 
 fun register(){
-    val URL = "http://192.168.0.20/BrainyBattles/inserction.php"
+    val URL = "http://192.168.137.202/BrainyBattles/inserction.php"
     val queue = Volley.newRequestQueue(this)
     var i = Intent(this, MainActivity::class.java)
 

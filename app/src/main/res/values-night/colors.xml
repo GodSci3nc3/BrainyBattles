@@ -2,18 +2,17 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="gris">#4F4F4F</color>
-    <color name="dark_gray">#282828</color>
     <color name="blue_start">#29588E</color>
     <color name="blue_end">#14DF2F</color>
     <color name="greenandblue_start">#418EE0</color>
     <color name="greenandblue_end">#52D946</color>
     <color name="blue">#0A4070</color>
-        <color name="white">#FFFFFFFF</color>
+    <color name="white">#FFFFFFFF</color>
     <color name="orange">#f78441</color>
     <color name = "darkblue">#272a57</color>
     <color name="sky">#288eef</color>
     <color name="navy_blue">#352e4f</color>
-    <color name="selected_color_menu">#288eef</color>
+    <color name="selected_color_menu">#8c72ed</color>
     <color name="darkred">#BB1D1D</color>
     <color name="darkgreen">#61E90D</color>
     <color name="light">#f3f1f7</color>

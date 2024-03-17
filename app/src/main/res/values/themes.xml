@@ -3,14 +3,16 @@
     <style name="Base.Theme.BrainyBattles2" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <item name="colorPrimary">@color/blue</item>
+
+        <item name="titles">@color/gris</item>
+
     </style>
 
-    <style name="Theme.BrainyBattles2" parent="Base.Theme.BrainyBattles2" />
+    <style name="Theme.BrainyBattles2" parent="Base.Theme.BrainyBattles2" >
+        <item name="android:windowFullscreen">true</item>
+    </style>
 
     <style name="splashtheme" parent="Base.Theme.BrainyBattles2">
     <item name="android:windowBackground">@drawable/splashscreen</item>
         </style>
-    <style name = "regilog">
-        <item name ="android:windowBackground">@drawable/regilog</item>
-    </style>
 </resources>

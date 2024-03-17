@@ -4,8 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ececec"
+    android:background="@drawable/menu_background"
     tools:context=".ProfileUserActivity">
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+
+        app:lottie_rawRes="@raw/hexagonos"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+
+        android:padding="20dp"
+        android:translationY="120dp"/>
+
 
     <ScrollView
         android:layout_width="match_parent"
@@ -70,18 +87,24 @@
                     app:layout_constraintStart_toStartOf="@+id/imageView10"
                     app:layout_constraintTop_toBottomOf="@+id/imageView10" />
 
-                <ImageButton
-                    android:id="@+id/button5"
+                <Button
+                    android:id="@+id/change_username"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:padding="8dp"
+
+                    android:layout_margin="5dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="264dp"
 
                     android:background="@mipmap/lapizx2"
+                    android:contentDescription="@string/setting"
 
+
+                    app:backgroundTint="@null"
                     app:layout_constraintBottom_toBottomOf="@+id/username"
                     app:layout_constraintStart_toEndOf="@+id/username"
-                    app:layout_constraintTop_toBottomOf="@+id/imageView10"
-                    app:layout_constraintVertical_bias="0.516" />
+                    app:layout_constraintTop_toTopOf="@+id/username" />
+
 
                 <EditText
                     android:id="@+id/email"
@@ -119,21 +142,56 @@
                         android:paddingStart="20dp"
                         android:text="@string/setting"
                         android:textAlignment="viewStart" />
+
                     <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/button2"
+                        android:id="@+id/button5"
                         android:layout_width="match_parent"
                         android:layout_height="60dp"
+
+
                         android:layout_marginStart="32dp"
                         android:layout_marginTop="10dp"
                         android:layout_marginEnd="32dp"
                         android:layout_marginBottom="10dp"
+
+
                         android:elevation="200dp"
                         android:padding="10dp"
+
+                        android:background="@drawable/profilebtn_background"
+
+
+                        android:drawableStart="@mipmap/alias"
+                        android:drawablePadding="12dp"
+                        android:paddingStart="20dp"
+
+
+                        android:text="@string/nickname_change"
+                        android:textAlignment="viewStart" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/button2"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+
+
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="32dp"
+                        android:layout_marginBottom="10dp"
+
+
+                        android:elevation="200dp"
+                        android:padding="10dp"
+
                         android:background="@drawable/profilebtn_background"
                         android:backgroundTint="@color/darkred"
-                        android:drawableStart="@mipmap/advertencia"
-                        android:drawablePadding="20dp"
-                        android:paddingStart="20dp"
+
+
+                        android:drawableStart="@mipmap/warning"
+                        android:drawablePadding="14dp"
+                        android:paddingStart="17dp"
+
                         android:text="@string/delete"
                         android:textColor="@color/white"
                         android:textAlignment="viewStart" />
@@ -146,5 +204,27 @@
 
 
     </ScrollView>
+
+    <com.ismaeldivita.chipnavigation.ChipNavigationBar
+        android:id="@+id/menu"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+
+
+        app:cnb_badgeColor="@color/red"
+
+        app:cnb_iconSize="24dp"
+        app:cnb_menuResource="@menu/bottom_menu"
+        app:cnb_radius="8dp"
+        app:cnb_unselectedColor="@color/gris"
+
+
+        android:background="@color/white"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+
+        app:cnb_orientationMode="horizontal" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

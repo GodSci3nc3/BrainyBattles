@@ -12,57 +12,100 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.brainybattles2.databinding.ActivityProfileBinding
+import com.ismaeldivita.chipnavigation.ChipNavigationBar
 import org.json.JSONException
 import org.json.JSONObject
 
 
-class ProfileUserActivity : AppCompatActivity() {
+class ProfileUserActivity : MainClass() {
 
     lateinit var binding: ActivityProfileBinding
-    var nombre: EditText?=null
     var correo: EditText?=null
-    var config: Button?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val bottomMenu = findViewById<ChipNavigationBar>(R.id.menu)
+
+        val window: Window = this@ProfileUserActivity.window
+        window.statusBarColor = ContextCompat.getColor(this@ProfileUserActivity, R.color.grey)
+
+
 
         // Construcción de datos en perfil
         var username = intent.getStringExtra("nickname").toString()
         val email = intent.getStringExtra("correo").toString()
 
 
-        nombre = findViewById(R.id.username)
-        correo = findViewById(R.id.email)
-        config = findViewById(R.id.button)
 
-        val name : ImageView = findViewById((R.id.button5))
+    binding.apply {
+
+        val nombre = findViewById<EditText>(R.id.username)
+        correo = findViewById(R.id.email)
+        val name = findViewById<Button>(R.id.change_username)
+        val change_apodo = findViewById<Button>(R.id.button5)
         val img : ImageView = findViewById((R.id.imageView11))
         val delete : Button = findViewById(R.id.button2)
 
         nombre?.setText(username)
         correo?.setText(email)
 
-        delete.setOnClickListener {val message :String? = "Aviso: ¡Esto eliminará su cuenta permanentemente!"
-            dialog(message, email)}
+
+        bottomMenu.setItemSelected(R.id.Profile)
+
+        bottomMenu.setOnItemSelectedListener {
+
+            if (it == R.id.Home) startActivity(Intent(this@ProfileUserActivity, MainActivity::class.java))
+        }
 
 
-        name.setOnClickListener {
-            val message: String? = "¡Personalice su nombre de usuario cuántas veces desee!"
+        delete.setOnClickListener {
+            val message :String? = "Aviso: ¡Esto eliminará su cuenta permanentemente!"
+            dialog(message, email)
+
+        }
+
+
+
+        name.setOnClickListener{
+            val message: String? = "¡Personalice su nombre cuantas veces desee!"
             val data = "nickname"
             edit_profile(message, email, data, nombre!!)
+
+        }
+
+        change_apodo.setOnClickListener {
+            val message: String? = "¡Personalice su nombre cuantas veces desee!"
+            val data = "Apodo"
+            edit_profile(message, email, data, nombre!!)
+
         }
 
 
     }
 
 
+
+    }
+
+    fun goHome(username: String, email: String){
+
+        val i = Intent(this, MainActivity::class.java)
+        i.putExtra("nickname", username)
+        i.putExtra("correo", email)
+        startActivity(i)
+
+
+
+    }
     private fun dialog(message: String?, email: String) {
         val dialog = Dialog(this)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -89,6 +132,7 @@ class ProfileUserActivity : AppCompatActivity() {
     }
 
     private fun edit_profile(message: String?, email: String, data: String, usernameView: EditText): String {
+
         val dialog = Dialog(this)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCancelable(false)
@@ -108,10 +152,9 @@ class ProfileUserActivity : AppCompatActivity() {
         }
 
         access.setOnClickListener {
-            val newUsername = upgrade.text.toString()
-            editprofile(email, pass.text.toString(), data, newUsername)
+            editprofile(email, pass.text.toString(), data, upgrade.text.toString())
             dialog.dismiss()
-            usernameView.setText(newUsername)
+            usernameView.setText(upgrade.text.toString())
         }
 
         dialog.show()

@@ -6,6 +6,7 @@
     <string name="nombre">Ingresa tu nombre</string>
     <string name="pass">Contraseña</string>
     <string name="cuberotating">cuberotating</string>
+    <string name="nickname_change">Cambiar mi apodo</string>
     <string name="setting">Configuración</string>
     <string name="correo">Correo</string>
     <string name="delete">Eliminar la cuenta</string>

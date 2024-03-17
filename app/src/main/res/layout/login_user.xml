@@ -5,7 +5,7 @@
     android:id="@+id/backgroundview"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/greenandblue_gradient"
+    android:background="@drawable/login_register_background"
     android:transitionName="sharedBackgroundTransition"
     tools:context=".RegisterUserActivity">
 
@@ -29,8 +29,14 @@
         android:layout_width="match_parent"
         android:layout_height="650dp"
         android:layout_gravity="center"
-        android:background="@drawable/arc"
+        android:layout_margin="10dp"
+
+        android:background="@drawable/login_arc"
+
+
         android:orientation="vertical"
+
+
         app:layout_constraintBottom_toBottomOf="@+id/textView17"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -42,13 +48,16 @@
             android:id="@+id/textView15"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="32dp"
+
+            android:layout_marginLeft="20dp"
             android:layout_marginTop="32dp"
             android:layout_marginRight="32dp"
             android:layout_marginBottom="82dp"
+
+            android:textColor="?attr/titles"
+
             android:text="Bienvenido a \nBrainyBattles"
-            android:textColor="@color/gris"
-            android:textSize="45sp"
+            android:textSize="50sp"
             android:textStyle="bold" />
 
         <EditText
@@ -62,6 +71,7 @@
             android:background="@drawable/edittext_background"
             android:drawableStart="@mipmap/name"
             android:drawablePadding="16dp"
+            android:textColor="@color/black"
             android:ems="10"
             android:hint="@string/nombre"
             android:inputType="text"
@@ -80,6 +90,7 @@
             android:background="@drawable/edittext_background"
             android:drawableStart="@mipmap/email"
             android:drawablePadding="16dp"
+            android:textColor="@color/black"
             android:ems="10"
             android:hint="@string/correo"
             android:inputType="textEmailAddress"
@@ -98,6 +109,7 @@
             android:background="@drawable/edittext_background"
             android:drawableStart="@mipmap/password"
             android:drawablePadding="16dp"
+            android:textColor="@color/black"
             android:ems="10"
             android:hint="@string/pass"
             android:inputType="text"
