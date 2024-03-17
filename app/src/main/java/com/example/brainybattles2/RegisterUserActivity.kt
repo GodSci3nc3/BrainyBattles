@@ -1,9 +1,7 @@
 package com.example.brainybattles2
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
@@ -61,7 +59,7 @@ class RegisterUserActivity : MainClass() {
 
 
 fun register(){
-    val URL = "http://192.168.137.202/BrainyBattles/inserction.php"
+    val URL = "http://192.168.0.15/inserction.php"
     val queue = Volley.newRequestQueue(this)
     var i = Intent(this, MainActivity::class.java)
 

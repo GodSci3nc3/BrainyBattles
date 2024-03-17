@@ -4,17 +4,20 @@ import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import androidx.appcompat.app.AppCompatActivity
+import android.media.Image
+import android.net.Uri
 import android.os.Bundle
 import android.view.Window
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import com.android.volley.Request
-import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
@@ -27,28 +30,49 @@ import org.json.JSONObject
 class ProfileUserActivity : MainClass() {
 
     lateinit var binding: ActivityProfileBinding
+    lateinit var image_button: ImageView
+    lateinit var change_image: ImageView
+    var nombre: EditText?=null
     var correo: EditText?=null
+    var image_uri: String?=null
+
+    val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()){ uri ->
+        if (uri != null){
+            //Seleccionó una imagen
+            image_uri = uri.toString()
+            image_button.setImageURI(uri)
+
+
+
+
+        }else  {
+            //No seleccionó nada
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        image_button = findViewById(R.id.imageView10)
+        change_image = findViewById(R.id.imageView11)
         val bottomMenu = findViewById<ChipNavigationBar>(R.id.menu)
 
         val window: Window = this@ProfileUserActivity.window
         window.statusBarColor = ContextCompat.getColor(this@ProfileUserActivity, R.color.grey)
 
-
-
         // Construcción de datos en perfil
         var username = intent.getStringExtra("nickname").toString()
         val email = intent.getStringExtra("correo").toString()
+        var uri_string = intent.getStringExtra("profile_photo").toString()
 
 
+        image_button.setOnClickListener{
+            select_image(image_button)
+        }
 
-    binding.apply {
-
-        val nombre = findViewById<EditText>(R.id.username)
+        nombre = findViewById(R.id.username)
         correo = findViewById(R.id.email)
         val name = findViewById<Button>(R.id.change_username)
         val change_apodo = findViewById<Button>(R.id.button5)
@@ -57,13 +81,19 @@ class ProfileUserActivity : MainClass() {
 
         nombre?.setText(username)
         correo?.setText(email)
+        image_button.setImageURI(Uri.parse(uri_string))
+
+
+
+
+    binding.apply {
 
 
         bottomMenu.setItemSelected(R.id.Profile)
 
         bottomMenu.setOnItemSelectedListener {
 
-            if (it == R.id.Home) startActivity(Intent(this@ProfileUserActivity, MainActivity::class.java))
+            if (it == R.id.Home) goHome(username, email, image_uri)
         }
 
 
@@ -83,7 +113,7 @@ class ProfileUserActivity : MainClass() {
         }
 
         change_apodo.setOnClickListener {
-            val message: String? = "¡Personalice su nombre cuantas veces desee!"
+            val message: String? = "¡Ponte el apodo que tú quieras!"
             val data = "Apodo"
             edit_profile(message, email, data, nombre!!)
 
@@ -96,11 +126,16 @@ class ProfileUserActivity : MainClass() {
 
     }
 
-    fun goHome(username: String, email: String){
+    fun select_image(imageButton: ImageView){
+        pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+    }
+
+    fun goHome(username: String, email: String, image_uri: String?){
 
         val i = Intent(this, MainActivity::class.java)
         i.putExtra("nickname", username)
         i.putExtra("correo", email)
+        i.putExtra("profile_photo", image_uri)
         startActivity(i)
 
 
@@ -163,7 +198,7 @@ class ProfileUserActivity : MainClass() {
 
 
     fun goDelete(email: String, pass: String){
-        val URL = "http://192.168.0.20/BrainyBattles/delete.php"
+        val URL = "http://192.168.0.15/modify.php"
         val queue = Volley.newRequestQueue(this)
         var r = object : StringRequest(Request.Method.POST,URL, Response.Listener { response ->
             if(response == "Tu cuenta ha sido eliminada") {
@@ -189,11 +224,11 @@ class ProfileUserActivity : MainClass() {
     }
 
     fun editprofile(email: String, pass: String, data:String, update: String) {
-        val URL = "http://192.168.0.20/BrainyBattles/modify.php"
+        val URL = "http://192.168.0.15/modify.php"
         val queue = Volley.newRequestQueue(this)
 
         val r = object: StringRequest(Request.Method.POST,URL, Response.Listener { response ->
-            Toast.makeText(this, "Los cambios han sido guardados con éxito", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, response, Toast.LENGTH_SHORT).show()
 
         },
             Response.ErrorListener {error ->
@@ -211,6 +246,47 @@ class ProfileUserActivity : MainClass() {
         }
         queue.add(r)
 
+    }
+
+
+    fun image_change(){
+        val URL = "http://192.168.0.15/image_change.php"
+        val queue = Volley.newRequestQueue(this)
+        var i = Intent(this, MainActivity::class.java)
+
+
+        val r = object :  StringRequest(Request.Method.POST,URL, Response.Listener<String> { response ->
+            try {
+                val jsonResponse = JSONObject(response)
+
+                val nickname = jsonResponse.getString("nickname")
+                val correo = jsonResponse.getString("correo")
+
+
+                i.putExtra("nickname", nickname.toString())
+                i.putExtra("correo", correo.toString())
+
+                Toast.makeText(this,"Bienvenido, $nickname", Toast.LENGTH_SHORT).show()
+                startActivity(i)
+
+            } catch (e: JSONException) {
+                // Handle JSON parsing error
+                Toast.makeText(this, "Datos incorrectos", Toast.LENGTH_SHORT).show()
+            }
+
+        }, Response.ErrorListener { error ->
+            Toast.makeText(this,"Ha habido un error $error", Toast.LENGTH_LONG).show()
+        })
+        {
+            override fun getParams(): MutableMap<String, String>? {
+                val parameters = HashMap<String, String>()
+                parameters.put("nombre",nombre?.text.toString())
+                parameters.put("correo",correo?.text.toString())
+
+                return parameters
+            }
+        }
+        queue.add(r)
     }
 
 }

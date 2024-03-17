@@ -69,7 +69,7 @@
             android:layout_marginEnd="32dp"
             android:layout_marginBottom="10dp"
             android:background="@drawable/edittext_background"
-            android:drawableStart="@mipmap/name"
+            android:drawableStart="@mipmap/without_photo_icon"
             android:drawablePadding="16dp"
             android:textColor="@color/black"
             android:ems="10"

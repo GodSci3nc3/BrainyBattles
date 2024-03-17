@@ -1,13 +1,7 @@
 package com.example.brainybattles2
 
-import android.animation.ArgbEvaluator
-import android.animation.ObjectAnimator
-import android.animation.ValueAnimator
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.ContactsContract.CommonDataKinds.Website.URL
-import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -16,13 +10,10 @@ import androidx.core.app.ActivityOptionsCompat
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.Response
-import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
-import java.net.URLEncoder
 
 
 class LoginUserActivity : MainClass() {
@@ -137,7 +128,7 @@ startActivity(intent, options.toBundle())
 
 fun login(email: String, pass: String, name:String){
 
-val URL = "http://192.168.0.20/BrainyBattles/login.php"
+val URL = "http://192.168.0.15/login.php"
 val queue:RequestQueue = Volley.newRequestQueue(this)
 val i = Intent(this, MainActivity::class.java)
 
