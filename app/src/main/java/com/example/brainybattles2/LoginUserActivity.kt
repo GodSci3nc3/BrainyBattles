@@ -36,10 +36,13 @@ class LoginUserActivity : MainClass() {
         val pass = findViewById<EditText>(R.id.pass)
 
         loginbutton.setOnClickListener {
-             login("prueba@gmail.com", "123", "arturo")
-             startActivity(Intent(this,MainActivity::class.java))
+            login(email.text.toString(), name.text.toString(), pass.text.toString())
 
-/* login(email.text.toString(), name.text.toString(), pass.text.toString())*/
+
+             /*login("prueba@gmail.com", "123", "arturo")
+             startActivity(Intent(this,MainActivity::class.java))*/
+
+
 }
 registerbutton.setOnClickListener {
 
@@ -124,11 +127,16 @@ startActivity(intent, options.toBundle())
 
 
 }
+    fun getURL(nombreURL: String): String? {
+        val jsonString = applicationContext.assets.open("urls.json").bufferedReader().use { it.readText() }
+        val json = JSONObject(jsonString)
+        return json.optString(nombreURL)
+    }
 
 
 fun login(email: String, pass: String, name:String){
 
-val URL = "http://192.168.0.15/login.php"
+val URL = getURL("login")
 val queue:RequestQueue = Volley.newRequestQueue(this)
 val i = Intent(this, MainActivity::class.java)
 
@@ -138,12 +146,14 @@ try {
 
    val nickname = jsonResponse.getString("nickname")
    val correo = jsonResponse.getString("correo")
+    val apodo = jsonResponse.getString("Apodo")
 
 
    i.putExtra("nickname", nickname.toString())
    i.putExtra("correo", correo.toString())
+    i.putExtra("apodo", apodo.toString())
 
-   Toast.makeText(this,"Bienvenido, $nickname", Toast.LENGTH_SHORT).show()
+   Toast.makeText(this,"Bienvenido, $apodo", Toast.LENGTH_SHORT).show()
    startActivity(i)
 
 } catch (e: JSONException) {
@@ -156,9 +166,9 @@ Toast.makeText(this,"$error", Toast.LENGTH_SHORT).show()
 {
 override fun getParams(): MutableMap<String, String>? {
    val parameters = HashMap<String, String>()
-   parameters.put("nombre",name.toString())
-   parameters.put("correo",email.toString())
-   parameters.put("contraseña",pass.toString())
+   parameters.put("nombre",name)
+   parameters.put("correo",email)
+   parameters.put("contraseña", pass)
 
    return parameters
 }

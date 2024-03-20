@@ -112,7 +112,7 @@
             android:textColor="@color/black"
             android:ems="10"
             android:hint="@string/pass"
-            android:inputType="text"
+            android:inputType="textPassword"
             android:padding="8dp"
             android:textColorHint="#756c6c"
             android:translationY="-60dp" />

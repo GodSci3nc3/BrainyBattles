@@ -52,6 +52,13 @@ class RegisterUserActivity : MainClass() {
 
 
     }
+    fun getURL(nombreURL: String): String? {
+        val jsonString = applicationContext.assets.open("urls.json").bufferedReader().use { it.readText() }
+        val json = JSONObject(jsonString)
+        return json.optString(nombreURL)
+    }
+
+
     private fun login(){
         var i = Intent(this, LoginUserActivity::class.java)
         startActivity(i)
@@ -59,7 +66,7 @@ class RegisterUserActivity : MainClass() {
 
 
 fun register(){
-    val URL = "http://192.168.0.15/inserction.php"
+    val URL = getURL("inserction")
     val queue = Volley.newRequestQueue(this)
     var i = Intent(this, MainActivity::class.java)
 

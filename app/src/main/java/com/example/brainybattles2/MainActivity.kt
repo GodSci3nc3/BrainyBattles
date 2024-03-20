@@ -1,5 +1,6 @@
 package com.example.brainybattles2
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -14,7 +15,6 @@ import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.brainybattles2.databinding.ActivityMainBinding
-import com.example.brainybattles2.databinding.ActivityProfileBinding
 import com.ismaeldivita.chipnavigation.ChipNavigationBar
 import org.json.JSONException
 import org.json.JSONObject
@@ -24,10 +24,6 @@ class MainActivity : MainClass() {
 
     lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
-
-        val username = intent.getStringExtra("nickname").toString()
-        val email = intent.getStringExtra("correo").toString()
-        val image_uri = intent.getStringExtra("profile_photo").toString()
 
         super.onCreate(savedInstanceState)
 
@@ -43,17 +39,35 @@ class MainActivity : MainClass() {
 
         binding.apply {
 
+            val username = intent.getStringExtra("nickname").toString()
+            val email = intent.getStringExtra("correo").toString()
+            val apodo = intent.getStringExtra("apodo")
+            //  val image_uri = intent.getStringExtra("profile_photo").toString()
+
+
 
             val saludo = findViewById<TextView>(R.id.textView3)
             val profile = findViewById<ImageView>(R.id.imageView4)
+            if (apodo != null && apodo.isNotEmpty()) {
+                saludo.text = "Hola, $apodo"
+            } else {
+                saludo.text = "Hola, $username"
+            }
 
-            saludo.text = "Hola, $username"
+
+           /* if (image_uri != ""){
+
             profile.setImageURI(Uri.parse(image_uri))
+
+            }else {
 
             FindMyUser(username, email, saludo, profile)
 
+            }
+
+            */
             profile.setOnClickListener{
-                goProfile(username, email, image_uri)
+                goProfile(username, email, apodo)
 
             }
 
@@ -62,13 +76,21 @@ class MainActivity : MainClass() {
 
         bottomMenu.setOnItemSelectedListener {
 
-            if (it == R.id.Profile) goProfile(username, email, image_uri)
+            if (it == R.id.Profile) goProfile(username, email, apodo)
 
         }
             }
 
     }
-   fun goProfile(username: String, email: String, image_uri: String){
+
+    fun getURL(nombreURL: String): String? {
+        val jsonString = applicationContext.assets.open("urls.json").bufferedReader().use { it.readText() }
+        val json = JSONObject(jsonString)
+        return json.optString(nombreURL)
+    }
+
+
+   fun goProfile(username: String, email: String, apodo: String?){
 
     /*
        val dialog = Dialog(this)
@@ -82,17 +104,19 @@ class MainActivity : MainClass() {
         val i = Intent(this, ProfileUserActivity::class.java)
         i.putExtra("nickname", username)
         i.putExtra("correo", email)
-       i.putExtra("profile_photo", image_uri)
+       i.putExtra("apodo", apodo)
+      // i.putExtra("profile_photo", image_uri)
         startActivity(i)
 
 
 
     }
 
+/*
     fun FindMyUser(username: String, email: String, saludo:TextView, profile:ImageView){
 
 
-        val URL = "http://192.168.0.15/show.php"
+        val URL = "show"
         val queue:RequestQueue = Volley.newRequestQueue(this)
 
         val r = object :  StringRequest(Request.Method.POST,URL, Response.Listener<String> { response ->
@@ -100,10 +124,10 @@ class MainActivity : MainClass() {
                 val jsonResponse = JSONObject(response)
 
                 val nickname = jsonResponse.getString("nickname")
-                val foto_perfil = jsonResponse.getString("foto")
+                val fotoperfil = jsonResponse.getString("foto")
 
                 saludo.text = "Hola, $nickname"
-                profile.setImageURI(Uri.parse(foto_perfil))
+                profile.setImageURI(Uri.parse(fotoperfil))
 
 
 
@@ -125,4 +149,6 @@ class MainActivity : MainClass() {
         }
         queue.add(r)
     }
+
+ */
 }
