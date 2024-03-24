@@ -41,6 +41,7 @@ android {
 
 dependencies {
 
+    implementation("mysql:mysql-connector-java:8.0.28")
     implementation("androidx.activity:activity:1.8.2")
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
@@ -56,4 +57,5 @@ dependencies {
     implementation("com.android.volley:volley:1.2.1")
     implementation("com.github.ismaeldivita:chip-navigation-bar:1.4.0")
     implementation("androidx.datastore:datastore-preferences-core:1.0.0")
+    implementation ("com.github.bumptech.glide:glide:4.16.0")
 }
