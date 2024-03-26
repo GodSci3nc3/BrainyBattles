@@ -7,13 +7,13 @@
     android:background="@drawable/menu_background"
     tools:context=".MainActivity">
 
-
     <ScrollView
         android:id="@+id/scrollView3"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout_editor_absoluteX="-16dp"
         tools:layout_editor_absoluteY="0dp">
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -131,6 +131,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/singleBtn"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginStart="8dp"
@@ -242,7 +243,7 @@
                         android:layout_marginEnd="8dp"
                         android:layout_marginBottom="8dp"
                         android:layout_weight="0.5"
-                        android:background="@drawable/buttons_backgrounds"
+                        android:background="@drawable/categorias_buttons_background"
                         android:elevation="3dp"
                         android:gravity="center"
                         android:orientation="horizontal">
@@ -276,7 +277,7 @@
                         android:layout_marginEnd="24dp"
                         android:layout_marginBottom="8dp"
                         android:layout_weight="0.5"
-                        android:background="@drawable/buttons_backgrounds"
+                        android:background="@drawable/categorias_buttons_background"
 
                         android:elevation="3dp"
                         android:gravity="center"
@@ -316,7 +317,7 @@
                         android:layout_marginEnd="8dp"
                         android:layout_marginBottom="8dp"
                         android:layout_weight="0.5"
-                        android:background="@drawable/buttons_backgrounds"
+                        android:background="@drawable/categorias_buttons_background"
                         android:elevation="3dp"
                         android:gravity="center"
                         android:orientation="horizontal">
@@ -350,7 +351,7 @@
                         android:layout_marginEnd="24dp"
                         android:layout_marginBottom="8dp"
                         android:layout_weight="0.5"
-                        android:background="@drawable/buttons_backgrounds"
+                        android:background="@drawable/categorias_buttons_background"
                         android:elevation="3dp"
                         android:gravity="center"
                         android:orientation="horizontal">
@@ -389,7 +390,7 @@
                         android:layout_marginEnd="16dp"
                         android:layout_marginBottom="8dp"
                         android:layout_weight="0.5"
-                        android:background="@drawable/buttons_backgrounds"
+                        android:background="@drawable/categorias_buttons_background"
                         android:elevation="3dp"
                         android:gravity="center"
                         android:orientation="horizontal">
@@ -421,7 +422,7 @@
                         android:layout_marginEnd="24dp"
                         android:layout_marginBottom="8dp"
                         android:layout_weight="0.5"
-                        android:background="@drawable/buttons_backgrounds"
+                        android:background="@drawable/categorias_buttons_background"
                         android:elevation="3dp"
                         android:gravity="center"
                         android:orientation="horizontal">
@@ -493,29 +494,19 @@
         </LinearLayout>
     </ScrollView>
 
-    <com.ismaeldivita.chipnavigation.ChipNavigationBar
-        android:id="@+id/menu"
+    <FrameLayout
+        android:id="@+id/frame_container"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-
-
-
-        app:cnb_badgeColor="@color/light"
-
-        app:cnb_iconSize="24dp"
-        app:cnb_menuResource="@menu/bottom_menu"
-        app:cnb_radius="8dp"
-        app:cnb_unselectedColor="@color/gris"
-
-
-        android:background="@drawable/menu_background"
-
+        android:layout_height="match_parent"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        app:cnb_orientationMode="horizontal" />
+    </FrameLayout>
+
+    <include layout="@layout/bottom_menu_static"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
