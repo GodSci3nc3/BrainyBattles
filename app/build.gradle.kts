@@ -48,14 +48,22 @@ dependencies {
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
+    //Corrutinas
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
+    //Jetpack DataStore
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+
     testImplementation("junit:junit:4.13.2")
 
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
+    //Animaciones lottie
     implementation("com.airbnb.android:lottie:6.3.0")
+    //Peticiones a internet - Volley
     implementation("com.android.volley:volley:1.2.1")
+    //Barra de navegación
     implementation("com.github.ismaeldivita:chip-navigation-bar:1.4.0")
-    implementation("androidx.datastore:datastore-preferences-core:1.0.0")
+    //Manejo de imágenes
     implementation ("com.github.bumptech.glide:glide:4.16.0")
 }

@@ -1,14 +1,17 @@
 package com.example.brainybattles2
 
+import android.content.ContentResolver
 import android.content.Intent
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.Window
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.android.volley.Request
+import androidx.lifecycle.lifecycleScope
 import com.android.volley.Request.Method.GET
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
@@ -16,6 +19,9 @@ import com.example.brainy_bat.Domain.QuestionModel
 import com.example.brainybattles2.Activity.QuizActivity
 import com.example.brainybattles2.databinding.ActivityMainBinding
 import com.ismaeldivita.chipnavigation.ChipNavigationBar
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.json.JSONObject
 
 class MainActivity : MainClass() {
@@ -24,15 +30,10 @@ class MainActivity : MainClass() {
     private lateinit var menu: ChipNavigationBar
     val question: MutableList<QuestionModel> = mutableListOf()
 
-    fun queue(){
-
-
-        //192.168.1.90
-
-        //192.168.137.238
+    private fun queue(){
 
         for (i in 1..5) {
-            val url = "http://192.168.0.10/conexion_php/registro.php?id=$i"
+            val url = "http://192.168.0.20/conexion_php/registro.php?id=$i"
             val queue = Volley.newRequestQueue(this)
 
             val jsonObjectRequest = JsonObjectRequest(
@@ -73,31 +74,56 @@ class MainActivity : MainClass() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        queue()
+
+
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
         menu = findViewById(R.id.menu)
+        val saludo = findViewById<TextView>(R.id.textView3)
+        val profile = findViewById<ImageView>(R.id.imageView4)
+
+
+        lifecycleScope.launch(Dispatchers.IO){
+            queue()
+            getUser().collect(){
+                Log.d("DataStore", "Storing username: ${it.picture} and email: ${it.name}")
+                withContext(Dispatchers.Main){
+
+                    if (it.picture.isNotEmpty()) {
+                        val imageUri = Uri.parse(it.picture)
+                        profile.setImageURI(imageUri)
+
+                        contentResolver.takePersistableUriPermission(
+                            imageUri,
+                            Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                        )
+
+                    if (it.nickname.isNotEmpty()) {
+                        saludo.text = "Bienvenido, ${it.nickname}"
+
+
+                    } else {
+                        if ((it.name.isNotEmpty())){
+                            saludo.text = "Bienvenido, ${it.name}"
+
+                        }
+                    }
+
+
+                }
+            }
+        }
+
+
+
+
         val window: Window = this@MainActivity.window
         window.statusBarColor = ContextCompat.getColor(this@MainActivity, R.color.grey)
 
-
-        val username = intent.getStringExtra("nickname").toString()
-        val email = intent.getStringExtra("correo").toString()
-        val apodo = intent.getStringExtra("apodo")
-        //  val image_uri = intent.getStringExtra("profile_photo").toString()
-
-
-
-        val saludo = findViewById<TextView>(R.id.textView3)
-        val profile = findViewById<ImageView>(R.id.imageView4)
-        if (apodo != null && apodo.isNotEmpty()) {
-            saludo.text = "Hola, $apodo"
-        } else {
-            saludo.text = "Hola, $username"
-        }
 
 
         /* if (image_uri != ""){
@@ -112,7 +138,7 @@ class MainActivity : MainClass() {
 
          */
         profile.setOnClickListener{
-            goProfile(username, email, apodo)
+            startActivity(Intent(this@MainActivity, ProfileUserActivity::class.java))
 
         }
 
@@ -121,7 +147,7 @@ class MainActivity : MainClass() {
 
             menu.setItemSelected(R.id.Home)
 
-        menu.setOnItemSelectedListener { if (it == R.id.Profile) goProfile(username, email, apodo) }
+        menu.setOnItemSelectedListener { if (it == R.id.Profile) startActivity(Intent(this@MainActivity, ProfileUserActivity::class.java)) }
 
             singleBtn.setOnClickListener {
                 val intent = Intent(this@MainActivity, QuizActivity::class.java)
@@ -141,6 +167,8 @@ class MainActivity : MainClass() {
 
    fun goProfile(username: String, email: String, apodo: String?){
 
+
+
     /*
        val dialog = Dialog(this)
        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -148,7 +176,7 @@ class MainActivity : MainClass() {
        dialog.setContentView(R.layout.activity_profile)
        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-    */
+
 
        val fragment = ProfileUserFragment()
        val bundle = Bundle()
@@ -161,7 +189,7 @@ class MainActivity : MainClass() {
        transaction.replace(R.id.frame_container, fragment) // Reemplaza "fragment_container" con el ID de tu contenedor de fragmentos
        transaction.addToBackStack(null) // Opcional, para agregar la transacción al back stack
        transaction.commit()
-
+*/
 
     }
 
@@ -204,4 +232,4 @@ class MainActivity : MainClass() {
     }
 
  */
-}
+}}

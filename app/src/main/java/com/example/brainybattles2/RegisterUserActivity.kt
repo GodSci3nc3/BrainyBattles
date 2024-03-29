@@ -6,19 +6,21 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityOptionsCompat
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.lifecycle.lifecycleScope
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.json.JSONException
 import org.json.JSONObject
 
 
 class RegisterUserActivity : MainClass() {
 
-    var nombre:EditText?=null
-    var correo:EditText?=null
-    var contraseña:EditText?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -28,9 +30,9 @@ class RegisterUserActivity : MainClass() {
         window.sharedElementEnterTransition.duration = 1000
 
 
-        nombre = findViewById<EditText>(R.id.username)
-        correo = findViewById<EditText>(R.id.email)
-        contraseña = findViewById<EditText>(R.id.pass)
+        val name = findViewById<EditText>(R.id.username)
+        val email = findViewById<EditText>(R.id.email)
+        val pass = findViewById<EditText>(R.id.pass)
 
 
         var registerbutton = findViewById<TextView>(R.id.loginregisterbutton)
@@ -43,11 +45,15 @@ class RegisterUserActivity : MainClass() {
                 this, loginbutton, "sharedButtonTransition"
             )
 
-            val intent = Intent(this, LoginUserActivity::class.java)
-            startActivity(intent, options.toBundle())
+            startActivity(Intent(this@RegisterUserActivity, LoginUserActivity::class.java), options.toBundle())
+            finish()
         }
         registerbutton.setOnClickListener {
-            register()
+            lifecycleScope.launch(Dispatchers.IO) {
+                register(name.text.toString(), email.text.toString(), pass.text.toString())
+                storeValues(name.text.toString(), email.text.toString())
+
+            }
         }
 
 
@@ -58,32 +64,29 @@ class RegisterUserActivity : MainClass() {
         return json.optString(nombreURL)
     }
 
-
-    private fun login(){
-        var i = Intent(this, LoginUserActivity::class.java)
-        startActivity(i)
+    private suspend fun storeValues(username: String, email: String) {
+        dataStore.edit { preferences ->
+            preferences[stringPreferencesKey("name")] = username
+            preferences[stringPreferencesKey("email")] = email
+        }
+        startActivity(Intent(this@RegisterUserActivity, MainActivity::class.java))
+        finish()
     }
 
 
-fun register(){
-    val URL = getURL("inserction")
+private fun register(name: String, email: String, pass: String){
+    val url = getURL("inserction")
     val queue = Volley.newRequestQueue(this)
-    var i = Intent(this, MainActivity::class.java)
 
 
-    val r = object :  StringRequest(Request.Method.POST,URL, Response.Listener<String> { response ->
+    val r = object :  StringRequest(Request.Method.POST,url, Response.Listener<String> { response ->
         try {
             val jsonResponse = JSONObject(response)
 
             val nickname = jsonResponse.getString("nickname")
-            val correo = jsonResponse.getString("correo")
 
-
-            i.putExtra("nickname", nickname.toString())
-            i.putExtra("correo", correo.toString())
 
             Toast.makeText(this,"Bienvenido, $nickname", Toast.LENGTH_SHORT).show()
-            startActivity(i)
 
         } catch (e: JSONException) {
             // Handle JSON parsing error
@@ -96,9 +99,9 @@ fun register(){
     {
         override fun getParams(): MutableMap<String, String>? {
             val parameters = HashMap<String, String>()
-            parameters.put("nombre",nombre?.text.toString())
-            parameters.put("correo",correo?.text.toString())
-            parameters.put("contraseña",contraseña?.text.toString())
+            parameters.put("nombre",name)
+            parameters.put("correo",email)
+            parameters.put("contraseña",pass)
 
             return parameters
         }

@@ -6,8 +6,6 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
-import android.util.Base64
-import android.util.Log
 import android.view.Window
 import android.widget.Button
 import android.widget.EditText
@@ -16,46 +14,45 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.lifecycle.lifecycleScope
 import com.android.volley.Request
-import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.brainybattles2.databinding.ActivityProfileBinding
 import com.ismaeldivita.chipnavigation.ChipNavigationBar
-import org.json.JSONException
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.json.JSONObject
-import java.io.IOException
-import java.io.InputStream
 
 
 class ProfileUserActivity : MainClass() {
 
     lateinit var binding: ActivityProfileBinding
+    private lateinit var menu: ChipNavigationBar
     lateinit var image_button: ImageView
-    lateinit var change_image: ImageView
-    var nombre: EditText?=null
-    var correo: EditText?=null
-    var apodo: String?=null
-    var username: String = ""
-    var email: String = ""
-    var uri_string: String = ""
+    lateinit var nombre: TextView
+    lateinit var correo: TextView
 
     val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()){ uri ->
         if (uri != null){
             //Seleccionó una imagen
             image_button.setImageURI(uri)
+            image_change(uri, nombre.text.toString(), correo.text.toString())
 
-            image_change(uri)
+            lifecycleScope.launch(Dispatchers.IO){
 
+            val data = "picture"
+            changeMyInformation(data, uri.toString())
+
+            }
         }else  {
             //No seleccionó nada
         }
     }
-
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,29 +60,36 @@ class ProfileUserActivity : MainClass() {
         setContentView(binding.root)
 
         image_button = findViewById(R.id.imageView10)
-        change_image = findViewById(R.id.imageView11)
-        val bottomMenu = findViewById<ChipNavigationBar>(R.id.menu)
-
-
-        // Construcción de datos en perfil
-        username = intent.getStringExtra("nickname").toString()
-        email = intent.getStringExtra("correo").toString()
-        apodo = intent.getStringExtra("apodo").toString()
-        //uri_string = intent.getStringExtra("profile_photo").toString()
-
-
+        menu = findViewById(R.id.menu)
         nombre = findViewById(R.id.username)
         correo = findViewById(R.id.email)
         val name = findViewById<Button>(R.id.change_username)
         val change_apodo = findViewById<Button>(R.id.button5)
         val delete : Button = findViewById(R.id.button2)
 
-        nombre?.setText(username)
-        correo?.setText(email)
-        //image_button.setImageURI(Uri.parse(uri_string))
+
+        lifecycleScope.launch(Dispatchers.IO){
+            getUser().collect(){
+                withContext(Dispatchers.Main){
+
+                    if (it.name.isNotEmpty() && it.email.isNotEmpty()) {
+                        nombre.text = it.name
+                        correo.text = it.email
+                    }
+                    if (it.picture.isNotEmpty()){
+                        val imageuri = Uri.parse(it.picture)
+                        image_button.setImageURI(imageuri)
+                    }
+
+
+                }
+            }
+        }
+
 
         image_button.setOnClickListener{
-            pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+
 
         }
 
@@ -94,33 +98,34 @@ class ProfileUserActivity : MainClass() {
     binding.apply {
 
 
-        bottomMenu.setItemSelected(R.id.Profile)
+        menu.setItemSelected(R.id.Profile)
 
-        bottomMenu.setOnItemSelectedListener {
+        menu.setOnItemSelectedListener {
 
-            if (it == R.id.Home) goHome()
+            if (it == R.id.Home) startActivity(Intent(this@ProfileUserActivity, MainActivity::class.java))
         }
 
 
+
         delete.setOnClickListener {
-            val message :String? = "Aviso: ¡Esto eliminará su cuenta permanentemente!"
-            dialog(message)
+            val message = "Aviso: ¡Esto eliminará su cuenta permanentemente!"
+            dialog(message, nombre.text.toString(), correo.text.toString())
 
         }
 
 
 
         name.setOnClickListener{
-            val message: String? = "¡Personalice su nombre cuantas veces desee!"
-            val data = "nickname"
-            edit_profile(message, data, nombre!!)
+            val message = "¡Personalice su nombre cuantas veces desee!"
+            val data = "name"
+           edit_profile(message, data, nombre!!, nombre.text.toString(), correo.text.toString())
 
         }
 
         change_apodo.setOnClickListener {
-            val message: String? = "¡Usa el apodo que tú quieras!"
-            val data = "Apodo"
-            edit_profile(message, data, nombre!!)
+            val message = "¡Usa el apodo que tú quieras!"
+            val data = "nickname"
+            edit_profile(message, data, nombre!!, nombre.text.toString(), correo.text.toString())
 
         }
 
@@ -137,19 +142,7 @@ class ProfileUserActivity : MainClass() {
         return json.optString(nombreURL)
     }
 
-    fun goHome(){
-
-        val i = Intent(this, MainActivity::class.java)
-        i.putExtra("nickname", username)
-        i.putExtra("correo", email)
-        i.putExtra("apodo", apodo)
-        //i.putExtra("profile_photo", imageuri)
-        startActivity(i)
-
-
-
-    }
-    private fun dialog(message: String?) {
+    private fun dialog(message: String, nombre: String, correo: String) {
         val dialog = Dialog(this)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCancelable(false)
@@ -168,91 +161,96 @@ class ProfileUserActivity : MainClass() {
             dialog.dismiss()
         }
         access.setOnClickListener {
-            goDelete(username, email, pass.text.toString())
+           goDelete(nombre, correo, pass.text.toString())
         }
         dialog.show()
 
     }
 
-    private fun edit_profile(message: String?, data: String, usernameView: EditText): String {
+    private fun edit_profile(message: String, data: String, usernameView: TextView, username: String, email: String): String {
 
-        val dialog = Dialog(this)
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setCancelable(false)
-        dialog.setContentView(R.layout.edit_profile_layout)
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+         val dialog = Dialog(this)
+         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+         dialog.setCancelable(false)
+         dialog.setContentView(R.layout.edit_profile_layout)
+         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        val notice: TextView = dialog.findViewById(R.id.notice)
-        val upgrade: EditText = dialog.findViewById(R.id.editTextText)
-        val pass: EditText = dialog.findViewById(R.id.editTextTextPassword)
-        val access: Button = dialog.findViewById(R.id.button4)
-        val back: Button = dialog.findViewById(R.id.button3)
+         val notice: TextView = dialog.findViewById(R.id.notice)
+         val upgrade: EditText = dialog.findViewById(R.id.editTextText)
+         val pass: EditText = dialog.findViewById(R.id.editTextTextPassword)
+         val access: Button = dialog.findViewById(R.id.button4)
+         val back: Button = dialog.findViewById(R.id.button3)
 
-        notice.text = message
+         notice.text = message
 
-        back.setOnClickListener {
-            dialog.dismiss()
-        }
+         back.setOnClickListener {
+             dialog.dismiss()
+         }
 
-        access.setOnClickListener {
-           val bandera = editprofile(username, email, pass.text.toString(), data, upgrade.text.toString())
+         access.setOnClickListener {
+             lifecycleScope.launch(Dispatchers.IO) {
+                 editprofile(username, email, pass.text.toString(), data, upgrade.text.toString())
+                 changeMyInformation(data, upgrade.text.toString())
+             }
 
-            dialog.dismiss()
-            if (data == "nickname"){
+             dialog.dismiss()
+             if (data == "nickname") {
 
-            usernameView.setText(upgrade.text.toString())
-                username = upgrade.text.toString()
+                 usernameView.text = upgrade.text.toString()
 
-            }
-            if (data == "Apodo"){
-                apodo = upgrade.text.toString()
+             }
+         }
 
-            }
-        }
+         dialog.show()
 
-        dialog.show()
-
-        return upgrade.text.toString()
+         return upgrade.text.toString()
     }
 
-/*
-    fun FindMyUser(nickname: String, email: String, usernameView: EditText){
-
-        val URL = "show"
-        val queue: RequestQueue = Volley.newRequestQueue(this)
-
-        val r = object :  StringRequest(Request.Method.POST,URL, Response.Listener<String> { response ->
-            try {
-                val jsonResponse = JSONObject(response)
-
-                val name_user = jsonResponse.getString("nickname")
-                val email_user = jsonResponse.getString("nickname")
-               // val fotoperfil = jsonResponse.getString("foto")
-
-
-
-
-
-            } catch (e: JSONException) {
-                // Handle JSON parsing error
-                Toast.makeText(this, "Datos incorrectos", Toast.LENGTH_SHORT).show()
-            }
-        }, Response.ErrorListener { error ->
-            Toast.makeText(this,"$error", Toast.LENGTH_SHORT).show()
-        })
-        {
-            override fun getParams(): MutableMap<String, String>? {
-                val parameters = HashMap<String, String>()
-                parameters.put("nombre",nickname)
-                parameters.put("correo",email)
-
-                return parameters
-            }
+    private suspend fun changeMyInformation(data: String, update: String) {
+        dataStore.edit { preferences ->
+            preferences[stringPreferencesKey(data)] = update
         }
-        queue.add(r)
     }
 
-*/
+    /*
+        fun FindMyUser(nickname: String, email: String, usernameView: EditText){
+
+            val URL = "show"                image_change()
+
+            val queue: RequestQueue = Volley.newRequestQueue(this)
+
+            val r = object :  StringRequest(Request.Method.POST,URL, Response.Listener<String> { response ->
+                try {
+                    val jsonResponse = JSONObject(response)
+
+                    val name_user = jsonResponse.getString("nickname")
+                    val email_user = jsonResponse.getString("nickname")
+                   // val fotoperfil = jsonResponse.getString("foto")
+
+
+
+
+
+                } catch (e: JSONException) {
+                    // Handle JSON parsing error
+                    Toast.makeText(this, "Datos incorrectos", Toast.LENGTH_SHORT).show()
+                }
+            }, Response.ErrorListener { error ->
+                Toast.makeText(this,"$error", Toast.LENGTH_SHORT).show()
+            })
+            {
+                override fun getParams(): MutableMap<String, String>? {
+                    val parameters = HashMap<String, String>()
+                    parameters.put("nombre",nickname)
+                    parameters.put("correo",email)
+
+                    return parameters
+                }
+            }
+            queue.add(r)
+        }
+
+    */
 
     fun goDelete(username: String, email: String, pass: String){
         val URL = getURL("delete")
@@ -281,7 +279,7 @@ class ProfileUserActivity : MainClass() {
         queue.add(r)
     }
 
-    fun editprofile(username: String, email: String, pass: String, data:String, update: String) {
+    private fun editprofile(username: String, email: String, pass: String, data:String, update: String) {
         val URL = getURL("modify")
         val queue = Volley.newRequestQueue(this)
 
@@ -294,13 +292,17 @@ class ProfileUserActivity : MainClass() {
 
                 Toast.makeText(this, "$error", Toast.LENGTH_SHORT).show()
             }) {
-            override fun getParams(): MutableMap<String, String>? {
+            override fun getParams(): MutableMap<String, String> {
                 val parameters = HashMap<String, String>()
-                parameters.put("nombre", username)
-                parameters.put("correo", email)
-                parameters.put("contraseña", pass)
+
                 parameters.put("data", data)
                 parameters.put("update", update)
+                parameters.put("contraseña", pass)
+                parameters.put("correo", email)
+                parameters.put("nombre", username)
+
+
+
 
                 return parameters
             }
@@ -309,35 +311,27 @@ class ProfileUserActivity : MainClass() {
     }
 
 
-    fun image_change(image_uri: Uri){
+    fun image_change(image_uri: Uri?, username: String, email: String){
         val URL = getURL("image_change")
         val queue = Volley.newRequestQueue(this)
 
         val r = object :  StringRequest(Request.Method.POST,URL, Response.Listener { response ->
 
-            Toast.makeText(this,"r $response", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, response, Toast.LENGTH_LONG).show()
         }, Response.ErrorListener { error ->
-            Toast.makeText(this,"r $error", Toast.LENGTH_LONG).show()
+            Toast.makeText(this,"error: $error", Toast.LENGTH_LONG).show()
         })
         {
             override fun getParams(): MutableMap<String, String>? {
                 val parameters = HashMap<String, String>()
                 parameters.put("nombre", username)
                 parameters.put("correo", email)
-                parameters.put("foto", convertImageToBase64(image_uri))
+                parameters.put("foto", image_uri.toString())
 
                 return parameters
             }
         }
         queue.add(r)
-    }
-
-    @Throws(IOException::class)
-    private fun convertImageToBase64(uri: Uri): String {
-        val inputStream: InputStream? = contentResolver.openInputStream(uri)
-        val bytes: ByteArray = inputStream?.readBytes() ?: ByteArray(0)
-        inputStream?.close()
-        return Base64.encodeToString(bytes, Base64.DEFAULT)
     }
 
 }
