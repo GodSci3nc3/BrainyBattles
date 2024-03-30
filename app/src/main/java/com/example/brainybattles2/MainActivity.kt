@@ -1,9 +1,7 @@
 package com.example.brainybattles2
 
-import android.content.ContentResolver
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Window
@@ -26,7 +24,7 @@ import org.json.JSONObject
 
 class MainActivity : MainClass() {
 
-    lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
     private lateinit var menu: ChipNavigationBar
     val question: MutableList<QuestionModel> = mutableListOf()
 
@@ -90,18 +88,26 @@ class MainActivity : MainClass() {
         lifecycleScope.launch(Dispatchers.IO){
             queue()
             getUser().collect(){
-                Log.d("DataStore", "Storing username: ${it.picture} and email: ${it.name}")
+                Log.d("DataStore", "Store picture: ${it.picture}")
                 withContext(Dispatchers.Main){
 
                     if (it.picture.isNotEmpty()) {
                         val imageUri = Uri.parse(it.picture)
-                        profile.setImageURI(imageUri)
+                        // Manteniendo permisos para la imagen
+                      /*  val flag = Intent.FLAG_GRANT_READ_URI_PERMISSION
+                        this@MainActivity.contentResolver.takePersistableUriPermission(imageUri, flag)
 
-                        contentResolver.takePersistableUriPermission(
+                        grantUriPermission(
+                            "com.example.brainybattles2",
                             imageUri,
-                            Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                            Intent.FLAG_GRANT_WRITE_URI_PERMISSION and Intent.FLAG_GRANT_READ_URI_PERMISSION
                         )
 
+
+                        profile.setImageURI(imageUri)
+*/
+
+                    }
                     if (it.nickname.isNotEmpty()) {
                         saludo.text = "Bienvenido, ${it.nickname}"
 
@@ -232,4 +238,4 @@ class MainActivity : MainClass() {
     }
 
  */
-}}
+}

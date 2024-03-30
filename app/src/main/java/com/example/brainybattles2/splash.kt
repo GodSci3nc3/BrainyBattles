@@ -33,24 +33,21 @@ class splash : MainClass() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        setContentView(R.layout.activity_splash)
 
-        // Modo inmersivo activado ;)
-        window.decorView.systemUiVisibility = (
-                View.SYSTEM_UI_FLAG_IMMERSIVE
-                        or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                        or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                        or View.SYSTEM_UI_FLAG_FULLSCREEN
-                        or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
+        val handler = Handler(Looper.getMainLooper())
+        handler.postDelayed({
 
-        // Verificar y solicitar permisos
-        if (checkPermissions()) {
-            Log.d("DataStore", "Storing username:")
-            continueInitialization()
-        } else {
-            requestPermissions()
-        }
+
+            // Verificar y solicitar permisos
+            if (checkPermissions()) {
+                continueInitialization()
+            } else {
+                requestPermissions()
+            }
+        }, 3500)
+
+
 
     }
 
@@ -81,8 +78,6 @@ class splash : MainClass() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == multiplePermissionId) {
             if (grantResults.isNotEmpty() && grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
-                Log.d("DataStore", "Storing username:")
-
                 continueInitialization()
             } else {
                 // Permiso(s) denegado(s), manejar en consecuencia
@@ -90,35 +85,21 @@ class splash : MainClass() {
         }
     }
     private fun continueInitialization() {
-        Log.d("DataStore", "Storing username:")
-
         lifecycleScope.launch(Dispatchers.IO) {
             val userProfile = getUserProfile()
             if (userProfile.name.isNotEmpty() && userProfile.email.isNotEmpty()) {
                 // Si el usuario ya se ha logueado antes:
-                withContext(Dispatchers.Main) {
-
-                    setContentView(R.layout.activity_splash)
-
-                    val handler = Handler(Looper.getMainLooper())
-                    handler.postDelayed({
-                    }, 3500)
 
                     startActivity(Intent(this@splash, MainActivity::class.java))
                     finish()
-                }
+
 
             } else {
                 withContext(Dispatchers.Main) {
 
-                    setContentView(R.layout.activity_splash)
-
-                    val handler = Handler(Looper.getMainLooper())
-                    handler.postDelayed({
                         val i = Intent(this@splash, LoginUserActivity::class.java)
                         startActivity(i)
                         finish()
-                    }, 3500)
 
                 }
             }

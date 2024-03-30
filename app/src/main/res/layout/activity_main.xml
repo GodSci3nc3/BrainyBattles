@@ -7,6 +7,20 @@
     android:background="@drawable/menu_background"
     tools:context=".MainActivity">
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:layout_width="600dp"
+        android:layout_height="1200dp"
+        android:rotation="90"
+        android:rotationY="-5"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/solarsystem" />
+
+
     <ScrollView
         android:id="@+id/scrollView3"
         android:layout_width="match_parent"

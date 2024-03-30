@@ -43,295 +43,316 @@ class ProfileUserActivity : MainClass() {
             image_button.setImageURI(uri)
             image_change(uri, nombre.text.toString(), correo.text.toString())
 
-            lifecycleScope.launch(Dispatchers.IO){
+/*  lifecycleScope.launch(Dispatchers.IO){
 
-            val data = "picture"
-            changeMyInformation(data, uri.toString())
+      // Manteniendo permisos para la imagen
+      val flag = Intent.FLAG_GRANT_READ_URI_PERMISSION
+      this@ProfileUserActivity.contentResolver.takePersistableUriPermission(uri, flag)
 
-            }
-        }else  {
-            //No seleccionó nada
-        }
-    }
+      grantUriPermission(
+          "com.example.brainybattles2",
+          uri,
+          Intent.FLAG_GRANT_WRITE_URI_PERMISSION and Intent.FLAG_GRANT_READ_URI_PERMISSION
+      )
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityProfileBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+  changeMyInformation("picture", uri.toString())
 
-        image_button = findViewById(R.id.imageView10)
-        menu = findViewById(R.id.menu)
-        nombre = findViewById(R.id.username)
-        correo = findViewById(R.id.email)
-        val name = findViewById<Button>(R.id.change_username)
-        val change_apodo = findViewById<Button>(R.id.button5)
-        val delete : Button = findViewById(R.id.button2)
+  }*/
+}else  {
+  //No seleccionó nada
+}
+}
 
+override fun onCreate(savedInstanceState: Bundle?) {
+super.onCreate(savedInstanceState)
+binding = ActivityProfileBinding.inflate(layoutInflater)
+setContentView(binding.root)
 
-        lifecycleScope.launch(Dispatchers.IO){
-            getUser().collect(){
-                withContext(Dispatchers.Main){
+image_button = findViewById(R.id.imageView10)
+menu = findViewById(R.id.menu)
+nombre = findViewById(R.id.username)
+correo = findViewById(R.id.email)
+val name = findViewById<Button>(R.id.change_username)
+val change_apodo = findViewById<Button>(R.id.button5)
+val delete : Button = findViewById(R.id.button2)
 
-                    if (it.name.isNotEmpty() && it.email.isNotEmpty()) {
-                        nombre.text = it.name
-                        correo.text = it.email
-                    }
-                    if (it.picture.isNotEmpty()){
-                        val imageuri = Uri.parse(it.picture)
-                        image_button.setImageURI(imageuri)
-                    }
 
+lifecycleScope.launch(Dispatchers.IO){
+  getUser().collect(){
+      withContext(Dispatchers.Main){
 
-                }
-            }
-        }
+          if (it.name.isNotEmpty() && it.email.isNotEmpty()) {
+              nombre.text = it.name
+              correo.text = it.email
+          }
+          if (it.picture.isNotEmpty()){
+              val imageUri = Uri.parse(it.picture)
+              // Manteniendo permisos para la imagen
+          /*    val flag = Intent.FLAG_GRANT_READ_URI_PERMISSION
+              this@ProfileUserActivity.contentResolver.takePersistableUriPermission(imageUri, flag)
 
+              grantUriPermission(
+                  "com.example.brainybattles2",
+                  imageUri,
+                  Intent.FLAG_GRANT_WRITE_URI_PERMISSION and Intent.FLAG_GRANT_READ_URI_PERMISSION
+              )
 
-        image_button.setOnClickListener{
-                pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+              image_button.setImageURI(imageUri)
+              */
+           
+          }
 
 
-        }
+      }
+  }
+}
 
 
+image_button.setOnClickListener{
+      pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
 
-    binding.apply {
 
+}
 
-        menu.setItemSelected(R.id.Profile)
 
-        menu.setOnItemSelectedListener {
 
-            if (it == R.id.Home) startActivity(Intent(this@ProfileUserActivity, MainActivity::class.java))
-        }
+binding.apply {
 
 
+menu.setItemSelected(R.id.Profile)
 
-        delete.setOnClickListener {
-            val message = "Aviso: ¡Esto eliminará su cuenta permanentemente!"
-            dialog(message, nombre.text.toString(), correo.text.toString())
+menu.setOnItemSelectedListener {
 
-        }
+  if (it == R.id.Home) startActivity(Intent(this@ProfileUserActivity, MainActivity::class.java))
+}
 
 
 
-        name.setOnClickListener{
-            val message = "¡Personalice su nombre cuantas veces desee!"
-            val data = "name"
-           edit_profile(message, data, nombre!!, nombre.text.toString(), correo.text.toString())
+delete.setOnClickListener {
+  val message = "Aviso: ¡Esto eliminará su cuenta permanentemente!"
+  dialog(message, nombre.text.toString(), correo.text.toString())
 
-        }
+}
 
-        change_apodo.setOnClickListener {
-            val message = "¡Usa el apodo que tú quieras!"
-            val data = "nickname"
-            edit_profile(message, data, nombre!!, nombre.text.toString(), correo.text.toString())
 
-        }
 
+name.setOnClickListener{
+  val message = "¡Personalice su nombre cuantas veces desee!"
+  val data = "name"
+ edit_profile(message, data, nombre!!, nombre.text.toString(), correo.text.toString())
 
-    }
+}
 
+change_apodo.setOnClickListener {
+  val message = "¡Usa el apodo que tú quieras!"
+  val data = "nickname"
+  edit_profile(message, data, nombre!!, nombre.text.toString(), correo.text.toString())
 
+}
 
-    }
 
-    fun getURL(nombreURL: String): String? {
-        val jsonString = applicationContext.assets.open("urls.json").bufferedReader().use { it.readText() }
-        val json = JSONObject(jsonString)
-        return json.optString(nombreURL)
-    }
+}
 
-    private fun dialog(message: String, nombre: String, correo: String) {
-        val dialog = Dialog(this)
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setCancelable(false)
-        dialog.setContentView(R.layout.dialog_layout)
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        val notice   :   TextView = dialog.findViewById(R.id.notice)
-        val pass    :   EditText = dialog.findViewById(R.id.editTextTextPassword)
-        val access  :   Button = dialog.findViewById(R.id.button4)
-        val back  :   Button = dialog.findViewById(R.id.button3)
 
+}
 
-        notice.text = message
+fun getURL(nombreURL: String): String? {
+val jsonString = applicationContext.assets.open("urls.json").bufferedReader().use { it.readText() }
+val json = JSONObject(jsonString)
+return json.optString(nombreURL)
+}
 
-        back.setOnClickListener {
-            dialog.dismiss()
-        }
-        access.setOnClickListener {
-           goDelete(nombre, correo, pass.text.toString())
-        }
-        dialog.show()
+private fun dialog(message: String, nombre: String, correo: String) {
+val dialog = Dialog(this)
+dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+dialog.setCancelable(false)
+dialog.setContentView(R.layout.dialog_layout)
+dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-    }
+val notice   :   TextView = dialog.findViewById(R.id.notice)
+val pass    :   EditText = dialog.findViewById(R.id.editTextTextPassword)
+val access  :   Button = dialog.findViewById(R.id.button4)
+val back  :   Button = dialog.findViewById(R.id.button3)
 
-    private fun edit_profile(message: String, data: String, usernameView: TextView, username: String, email: String): String {
 
-         val dialog = Dialog(this)
-         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-         dialog.setCancelable(false)
-         dialog.setContentView(R.layout.edit_profile_layout)
-         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+notice.text = message
 
-         val notice: TextView = dialog.findViewById(R.id.notice)
-         val upgrade: EditText = dialog.findViewById(R.id.editTextText)
-         val pass: EditText = dialog.findViewById(R.id.editTextTextPassword)
-         val access: Button = dialog.findViewById(R.id.button4)
-         val back: Button = dialog.findViewById(R.id.button3)
+back.setOnClickListener {
+  dialog.dismiss()
+}
+access.setOnClickListener {
+ goDelete(nombre, correo, pass.text.toString())
+}
+dialog.show()
 
-         notice.text = message
+}
 
-         back.setOnClickListener {
-             dialog.dismiss()
-         }
+private fun edit_profile(message: String, data: String, usernameView: TextView, username: String, email: String): String {
 
-         access.setOnClickListener {
-             lifecycleScope.launch(Dispatchers.IO) {
-                 editprofile(username, email, pass.text.toString(), data, upgrade.text.toString())
-                 changeMyInformation(data, upgrade.text.toString())
-             }
+val dialog = Dialog(this)
+dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+dialog.setCancelable(false)
+dialog.setContentView(R.layout.edit_profile_layout)
+dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-             dialog.dismiss()
-             if (data == "nickname") {
+val notice: TextView = dialog.findViewById(R.id.notice)
+val upgrade: EditText = dialog.findViewById(R.id.editTextText)
+val pass: EditText = dialog.findViewById(R.id.editTextTextPassword)
+val access: Button = dialog.findViewById(R.id.button4)
+val back: Button = dialog.findViewById(R.id.button3)
 
-                 usernameView.text = upgrade.text.toString()
+notice.text = message
 
-             }
-         }
+back.setOnClickListener {
+   dialog.dismiss()
+}
 
-         dialog.show()
+access.setOnClickListener {
+   lifecycleScope.launch(Dispatchers.IO) {
+       editprofile(username, email, pass.text.toString(), data, upgrade.text.toString())
+       changeMyInformation(data, upgrade.text.toString())
+   }
 
-         return upgrade.text.toString()
-    }
+   dialog.dismiss()
+   if (data == "nickname") {
 
-    private suspend fun changeMyInformation(data: String, update: String) {
-        dataStore.edit { preferences ->
-            preferences[stringPreferencesKey(data)] = update
-        }
-    }
+       usernameView.text = upgrade.text.toString()
 
-    /*
-        fun FindMyUser(nickname: String, email: String, usernameView: EditText){
+   }
+}
 
-            val URL = "show"                image_change()
+dialog.show()
 
-            val queue: RequestQueue = Volley.newRequestQueue(this)
+return upgrade.text.toString()
+}
 
-            val r = object :  StringRequest(Request.Method.POST,URL, Response.Listener<String> { response ->
-                try {
-                    val jsonResponse = JSONObject(response)
+private suspend fun changeMyInformation(data: String, update: String) {
+dataStore.edit { preferences ->
+  preferences[stringPreferencesKey(data)] = update
+}
+}
 
-                    val name_user = jsonResponse.getString("nickname")
-                    val email_user = jsonResponse.getString("nickname")
-                   // val fotoperfil = jsonResponse.getString("foto")
+/*
+fun FindMyUser(nickname: String, email: String, usernameView: EditText){
 
+  val URL = "show"                image_change()
 
+  val queue: RequestQueue = Volley.newRequestQueue(this)
 
+  val r = object :  StringRequest(Request.Method.POST,URL, Response.Listener<String> { response ->
+      try {
+          val jsonResponse = JSONObject(response)
 
+          val name_user = jsonResponse.getString("nickname")
+          val email_user = jsonResponse.getString("nickname")
+         // val fotoperfil = jsonResponse.getString("foto")
 
-                } catch (e: JSONException) {
-                    // Handle JSON parsing error
-                    Toast.makeText(this, "Datos incorrectos", Toast.LENGTH_SHORT).show()
-                }
-            }, Response.ErrorListener { error ->
-                Toast.makeText(this,"$error", Toast.LENGTH_SHORT).show()
-            })
-            {
-                override fun getParams(): MutableMap<String, String>? {
-                    val parameters = HashMap<String, String>()
-                    parameters.put("nombre",nickname)
-                    parameters.put("correo",email)
 
-                    return parameters
-                }
-            }
-            queue.add(r)
-        }
 
-    */
 
-    fun goDelete(username: String, email: String, pass: String){
-        val URL = getURL("delete")
-        val queue = Volley.newRequestQueue(this)
-        var r = object : StringRequest(Request.Method.POST,URL, Response.Listener { response ->
-            if(response == "Tu cuenta ha sido eliminada") {
-                startActivity( Intent(this, RegisterUserActivity::class.java))
-            }
 
-            Toast.makeText(this, response, Toast.LENGTH_SHORT).show()
-        }, Response.ErrorListener { error->
-            Toast.makeText(this,"$error" , Toast.LENGTH_SHORT).show()
+      } catch (e: JSONException) {
+          // Handle JSON parsing error
+          Toast.makeText(this, "Datos incorrectos", Toast.LENGTH_SHORT).show()
+      }
+  }, Response.ErrorListener { error ->
+      Toast.makeText(this,"$error", Toast.LENGTH_SHORT).show()
+  })
+  {
+      override fun getParams(): MutableMap<String, String>? {
+          val parameters = HashMap<String, String>()
+          parameters.put("nombre",nickname)
+          parameters.put("correo",email)
 
-        })
-        {
-            override fun getParams(): MutableMap<String, String>? {
-                val parameters = HashMap<String, String>()
+          return parameters
+      }
+  }
+  queue.add(r)
+}
 
-                parameters.put("username", username)
-                parameters.put("correo", email)
-                parameters.put("contraseña", pass)
+*/
 
-                return parameters
-            }
-        }
-        queue.add(r)
-    }
+fun goDelete(username: String, email: String, pass: String){
+val URL = getURL("delete")
+val queue = Volley.newRequestQueue(this)
+var r = object : StringRequest(Request.Method.POST,URL, Response.Listener { response ->
+  if(response == "Tu cuenta ha sido eliminada") {
+      startActivity( Intent(this, RegisterUserActivity::class.java))
+  }
 
-    private fun editprofile(username: String, email: String, pass: String, data:String, update: String) {
-        val URL = getURL("modify")
-        val queue = Volley.newRequestQueue(this)
+  Toast.makeText(this, response, Toast.LENGTH_SHORT).show()
+}, Response.ErrorListener { error->
+  Toast.makeText(this,"$error" , Toast.LENGTH_SHORT).show()
 
+})
+{
+  override fun getParams(): MutableMap<String, String>? {
+      val parameters = HashMap<String, String>()
 
-        val r = object: StringRequest(Request.Method.POST,URL, Response.Listener { response ->
-            Toast.makeText(this, response, Toast.LENGTH_SHORT).show()
+      parameters.put("username", username)
+      parameters.put("correo", email)
+      parameters.put("contraseña", pass)
 
-        },
-            Response.ErrorListener {error ->
+      return parameters
+  }
+}
+queue.add(r)
+}
 
-                Toast.makeText(this, "$error", Toast.LENGTH_SHORT).show()
-            }) {
-            override fun getParams(): MutableMap<String, String> {
-                val parameters = HashMap<String, String>()
+private fun editprofile(username: String, email: String, pass: String, data:String, update: String) {
+val URL = getURL("modify")
+val queue = Volley.newRequestQueue(this)
 
-                parameters.put("data", data)
-                parameters.put("update", update)
-                parameters.put("contraseña", pass)
-                parameters.put("correo", email)
-                parameters.put("nombre", username)
 
+val r = object: StringRequest(Request.Method.POST,URL, Response.Listener { response ->
+  Toast.makeText(this, response, Toast.LENGTH_SHORT).show()
 
+},
+  Response.ErrorListener {error ->
 
+      Toast.makeText(this, "$error", Toast.LENGTH_SHORT).show()
+  }) {
+  override fun getParams(): MutableMap<String, String> {
+      val parameters = HashMap<String, String>()
 
-                return parameters
-            }
-        }
-        queue.add(r)
-    }
+      parameters.put("data", data)
+      parameters.put("update", update)
+      parameters.put("contraseña", pass)
+      parameters.put("correo", email)
+      parameters.put("nombre", username)
 
 
-    fun image_change(image_uri: Uri?, username: String, email: String){
-        val URL = getURL("image_change")
-        val queue = Volley.newRequestQueue(this)
 
-        val r = object :  StringRequest(Request.Method.POST,URL, Response.Listener { response ->
 
-            Toast.makeText(this, response, Toast.LENGTH_LONG).show()
-        }, Response.ErrorListener { error ->
-            Toast.makeText(this,"error: $error", Toast.LENGTH_LONG).show()
-        })
-        {
-            override fun getParams(): MutableMap<String, String>? {
-                val parameters = HashMap<String, String>()
-                parameters.put("nombre", username)
-                parameters.put("correo", email)
-                parameters.put("foto", image_uri.toString())
+      return parameters
+  }
+}
+queue.add(r)
+}
 
-                return parameters
-            }
-        }
-        queue.add(r)
-    }
+
+fun image_change(image_uri: Uri?, username: String, email: String){
+val URL = getURL("image_change")
+val queue = Volley.newRequestQueue(this)
+
+val r = object :  StringRequest(Request.Method.POST,URL, Response.Listener { response ->
+
+  Toast.makeText(this, response, Toast.LENGTH_LONG).show()
+}, Response.ErrorListener { error ->
+  Toast.makeText(this,"error: $error", Toast.LENGTH_LONG).show()
+})
+{
+  override fun getParams(): MutableMap<String, String>? {
+      val parameters = HashMap<String, String>()
+      parameters.put("nombre", username)
+      parameters.put("correo", email)
+      parameters.put("foto", image_uri.toString())
+
+      return parameters
+  }
+}
+queue.add(r)
+}
 
 }
