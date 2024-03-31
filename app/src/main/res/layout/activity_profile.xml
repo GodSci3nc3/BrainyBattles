@@ -7,24 +7,8 @@
     android:background="@drawable/menu_background"
     tools:context=".ProfileUserActivity">
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-
-        app:lottie_rawRes="@raw/hexagonos"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"
-
-        android:padding="20dp"
-        android:translationY="120dp"/>
-
-
     <ScrollView
+        android:id="@+id/scrollView4"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout_editor_absoluteX="81dp"
@@ -42,10 +26,9 @@
                 <View
                     android:id="@+id/View9"
                     android:layout_width="match_parent"
-                    android:layout_height="170dp"
+                    android:layout_height="220dp"
 
                     android:adjustViewBounds="true"
-                    android:background="@drawable/arc_2"
                     android:scaleType="fitXY"
 
 
@@ -57,11 +40,11 @@
                     android:id="@+id/imageView10"
                     android:layout_width="120dp"
                     android:layout_height="120dp"
+                    android:src="@mipmap/profile"
                     app:layout_constraintBottom_toBottomOf="@+id/View9"
                     app:layout_constraintEnd_toEndOf="@+id/View9"
                     app:layout_constraintStart_toStartOf="@+id/View9"
-                    app:layout_constraintTop_toBottomOf="@+id/View9"
-                    android:src="@mipmap/profile" />
+                    app:layout_constraintTop_toBottomOf="@+id/View9" />
 
                 <ImageView
                     android:id="@+id/imageView11"
@@ -69,9 +52,9 @@
                     android:layout_height="40dp"
                     android:layout_marginEnd="4dp"
                     android:layout_marginBottom="8dp"
+                    android:src="@mipmap/lapiz"
                     app:layout_constraintBottom_toBottomOf="@+id/imageView10"
-                    app:layout_constraintEnd_toEndOf="@+id/imageView10"
-                    android:src="@mipmap/lapiz" />
+                    app:layout_constraintEnd_toEndOf="@+id/imageView10" />
 
                 <TextView
                     android:id="@+id/username"
@@ -157,14 +140,14 @@
                         android:layout_marginBottom="10dp"
 
 
+                        android:background="@drawable/profilebtn_background"
+                        android:drawableStart="@mipmap/alias"
+
+                        android:drawablePadding="12dp"
+
+
                         android:elevation="200dp"
                         android:padding="10dp"
-
-                        android:background="@drawable/profilebtn_background"
-
-
-                        android:drawableStart="@mipmap/alias"
-                        android:drawablePadding="12dp"
                         android:paddingStart="20dp"
 
 
@@ -183,20 +166,20 @@
                         android:layout_marginBottom="10dp"
 
 
-                        android:elevation="200dp"
-                        android:padding="10dp"
-
                         android:background="@drawable/profilebtn_background"
                         android:backgroundTint="@color/darkred"
 
-
                         android:drawableStart="@mipmap/warning"
                         android:drawablePadding="14dp"
+
+
+                        android:elevation="200dp"
+                        android:padding="10dp"
                         android:paddingStart="17dp"
 
                         android:text="@string/delete"
-                        android:textColor="@color/white"
-                        android:textAlignment="viewStart" />
+                        android:textAlignment="viewStart"
+                        android:textColor="@color/white" />
                 </LinearLayout>
 
 
@@ -205,5 +188,23 @@
         </LinearLayout>
 
     </ScrollView>
-    <include layout="@layout/bottom_menu_static"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/playbutton"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_gravity="right|bottom"
+            android:layout_marginBottom="70dp"
+            android:padding="5dp"
+            app:lottie_rawRes="@raw/icon_rocket" />
+
+        <include layout="@layout/bottom_menu_static" />
+    </FrameLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -17,6 +17,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.lifecycle.lifecycleScope
+import com.airbnb.lottie.LottieAnimationView
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
@@ -36,6 +37,7 @@ class ProfileUserActivity : MainClass() {
     lateinit var image_button: ImageView
     lateinit var nombre: TextView
     lateinit var correo: TextView
+
 
     val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()){ uri ->
         if (uri != null){
@@ -70,6 +72,7 @@ setContentView(binding.root)
 
 image_button = findViewById(R.id.imageView10)
 menu = findViewById(R.id.menu)
+val playbutton = findViewById<LottieAnimationView>(R.id.playbutton)
 nombre = findViewById(R.id.username)
 correo = findViewById(R.id.email)
 val name = findViewById<Button>(R.id.change_username)
@@ -126,6 +129,9 @@ menu.setOnItemSelectedListener {
   if (it == R.id.Home) startActivity(Intent(this@ProfileUserActivity, MainActivity::class.java))
 }
 
+playbutton.setOnClickListener{
+    playbutton.playAnimation()
+}
 
 
 delete.setOnClickListener {

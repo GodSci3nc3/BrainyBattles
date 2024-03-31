@@ -10,6 +10,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import com.airbnb.lottie.LottieAnimationView
 import com.android.volley.Request.Method.GET
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
@@ -81,6 +82,7 @@ class MainActivity : MainClass() {
 
 
         menu = findViewById(R.id.menu)
+        val playbutton = findViewById<LottieAnimationView>(R.id.playbutton)
         val saludo = findViewById<TextView>(R.id.textView3)
         val profile = findViewById<ImageView>(R.id.imageView4)
 
@@ -154,6 +156,10 @@ class MainActivity : MainClass() {
             menu.setItemSelected(R.id.Home)
 
         menu.setOnItemSelectedListener { if (it == R.id.Profile) startActivity(Intent(this@MainActivity, ProfileUserActivity::class.java)) }
+
+            playbutton.setOnClickListener{
+                playbutton.playAnimation()
+            }
 
             singleBtn.setOnClickListener {
                 val intent = Intent(this@MainActivity, QuizActivity::class.java)
