@@ -37,13 +37,12 @@ class QuizActivity : AppCompatActivity(),QuestionAdapter.score {
         val mediaplayer = MediaPlayer.create(this@QuizActivity,R.raw.quizz_bgm)
 
         binding.apply {
-
             mediaplayer.start()
-
             backBtn.setOnClickListener{
                 mediaplayer.stop()
                 timer.cancel()
-                finish()}
+                finish()
+            }
 
             progressBar.progress=1
 
