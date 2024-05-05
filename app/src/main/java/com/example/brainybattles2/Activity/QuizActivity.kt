@@ -34,7 +34,9 @@ class QuizActivity : AppCompatActivity(),QuestionAdapter.score {
         recievedList=intent.getParcelableArrayListExtra<QuestionModel>("list")!!.toMutableList()
 
         binding.apply {
-            backBtn.setOnClickListener{finish()}
+            backBtn.setOnClickListener{
+                timer.cancel()
+                finish()}
 
             progressBar.progress=1
 
