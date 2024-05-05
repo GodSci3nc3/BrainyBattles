@@ -42,7 +42,7 @@ class QuizActivity : AppCompatActivity(),QuestionAdapter.score {
 
             backBtn.setOnClickListener{
                 mediaplayer.stop()
-
+                timer.cancel()
                 finish()}
 
             progressBar.progress=1
