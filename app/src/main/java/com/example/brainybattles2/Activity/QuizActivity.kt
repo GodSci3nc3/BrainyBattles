@@ -3,6 +3,7 @@ package com.example.brainybattles2.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.view.Window
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,6 +18,7 @@ import com.example.brainybattles2.databinding.ActivityQuizBinding
 
 class QuizActivity : AppCompatActivity(),QuestionAdapter.score {
     private lateinit var binding: ActivityQuizBinding
+    private lateinit var timer: CountDownTimer
     var position:Int=0
     var recievedList : MutableList<QuestionModel> = mutableListOf()
     var allScore=0
@@ -47,6 +49,7 @@ class QuizActivity : AppCompatActivity(),QuestionAdapter.score {
                 .into(QuestionPic)
 
                 loadAnswers()
+                totalTimer()
 
                 rightArrow.setOnClickListener {
                     //PRUEBA
@@ -54,6 +57,7 @@ class QuizActivity : AppCompatActivity(),QuestionAdapter.score {
                         val intent= Intent(this@QuizActivity, ScoreActivity::class.java)
                         intent.putExtra("Score",allScore)
                         startActivity(intent)
+                        timer.cancel()
                         finish()
                         return@setOnClickListener
                     }
@@ -127,4 +131,24 @@ class QuizActivity : AppCompatActivity(),QuestionAdapter.score {
         allScore+=number
         recievedList[position].clickedAnswer=clickedAnswer
     }
+
+    private fun totalTimer(){
+        timer = object : CountDownTimer(30000, 1000L) {
+
+            override fun onTick(millisUntilFinished: Long) {
+
+                binding.txtTime.setText(""+millisUntilFinished / 1000)
+
+            }
+
+            override fun onFinish() {
+
+                val intent = Intent(this@QuizActivity, ScoreActivity::class.java)
+                intent.putExtra("Score", allScore)
+                startActivity(intent)
+                finish()
+            }
+        }.start()
+    }
+
 }
