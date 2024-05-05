@@ -1,6 +1,7 @@
 package com.example.brainybattles2.Activity
 
 import android.content.Intent
+import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -33,10 +34,15 @@ class QuizActivity : AppCompatActivity(),QuestionAdapter.score {
 
         recievedList=intent.getParcelableArrayListExtra<QuestionModel>("list")!!.toMutableList()
 
+        val mediaplayer = MediaPlayer.create(this@QuizActivity,R.raw.quizz_bgm)
+
         binding.apply {
+            mediaplayer.start()
             backBtn.setOnClickListener{
+                mediaplayer.stop()
                 timer.cancel()
-                finish()}
+                finish()
+            }
 
             progressBar.progress=1
 
@@ -60,6 +66,7 @@ class QuizActivity : AppCompatActivity(),QuestionAdapter.score {
                         intent.putExtra("Score",allScore)
                         startActivity(intent)
                         timer.cancel()
+                        mediaplayer.stop()
                         finish()
                         return@setOnClickListener
                     }
@@ -81,8 +88,19 @@ class QuizActivity : AppCompatActivity(),QuestionAdapter.score {
 
                 }
 
-                leftArrow.setOnClickListener {
-                    if(progressBar.progress==1){
+                soundBtn.setOnClickListener {
+
+                    if(mediaplayer.isPlaying){
+                        mediaplayer.pause()
+                        soundBtn.setImageResource(R.mipmap.ic_action_volume_off)
+                    }else{
+                        mediaplayer.start()
+                        soundBtn.setImageResource(R.mipmap.ic_action_volume_up)
+                    }
+
+
+
+                    /*if(progressBar.progress==1){
 
                         return@setOnClickListener
                     }
@@ -100,7 +118,7 @@ class QuizActivity : AppCompatActivity(),QuestionAdapter.score {
                         .apply(RequestOptions.bitmapTransform(RoundedCorners(60)))
                         .into(QuestionPic)
 
-                    loadAnswers()
+                    loadAnswers()*/
                 }
         }
 
