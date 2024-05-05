@@ -67,6 +67,15 @@
                     android:padding="12dp"
                     android:src="@mipmap/left_arrow" />
 
+                <TextView
+                    android:id="@+id/txtTime"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="5dp"
+                    android:text="15"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
                 <ImageView
                     android:id="@+id/rightArrow"
                     android:layout_width="40dp"
