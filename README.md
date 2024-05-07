@@ -1,5 +1,5 @@
 # BrainyBattles
-#### **Este es un archivo de descripción**
+<img src="https://github.com/GodSci3nc3/BrainyBattles/assets/149983555/fab52f3b-3a1e-4cc3-b9b4-c0937933bc66" alt="Portada. BrainyBattles" width="600" height="800" style="display: block; margin: auto;">
 
 ## Bienvenido a BrainyBattles
 BrainyBattles es un proyecto escolar importante donde, a través de una aplicación móvil, ponen el conocimiento de los usuarios entrantes. Nuestra aplicación se encuentra en desarrollo y continuará así por unos meses.
