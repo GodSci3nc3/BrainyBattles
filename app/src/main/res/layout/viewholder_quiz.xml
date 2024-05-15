@@ -7,14 +7,15 @@
     android:layout_marginTop="8dp"
     android:layout_marginEnd="24dp"
     android:layout_marginBottom="8dp"
-    android:background="@android:color/white"
+    android:background="@drawable/answertxt_background"
     android:elevation="3dp"
+    android:fontFamily="@font/play"
     android:gravity="center_vertical"
     android:paddingStart="16dp"
     android:paddingEnd="16dp"
     android:text="Respuestas"
-    android:textColor="@color/navy_blue"
-    android:textSize="16sp">
+    android:textColor="?attr/titles"
+    android:textSize="23sp">
 
 
 </TextView>

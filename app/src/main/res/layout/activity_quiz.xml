@@ -4,8 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey"
     tools:context=".Activity.QuizActivity">
+
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+
+        app:lottie_rawRes="@raw/space_background"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        />
+
 
     <ScrollView
         android:layout_width="match_parent"
@@ -35,7 +48,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Un jugador"
-                    android:textColor="@color/navy_blue"
+                    android:textColor="@color/grey"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     android:layout_gravity="center_vertical"
@@ -58,7 +71,9 @@
                     android:layout_weight="1"
                     android:text="Pregunta 1/5"
                     android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:textColor="@color/grey"
+                    />
 
                 <ImageView
                     android:id="@+id/leftArrow"
@@ -97,8 +112,9 @@
                 android:layout_margin="24dp"
                 android:textAlignment="center"
                 android:textStyle="bold"
-                android:textSize="20sp"
-                android:textColor="@color/navy_blue"
+                android:fontFamily="@font/play"
+                android:textSize="35sp"
+                android:textColor="@color/grey"
                 />
 
             <ImageView
@@ -116,7 +132,8 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/QuestionList"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+               />
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

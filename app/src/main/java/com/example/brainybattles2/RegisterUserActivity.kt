@@ -10,6 +10,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.lifecycle.lifecycleScope
 import com.android.volley.Request
+import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
@@ -49,48 +50,44 @@ class RegisterUserActivity : MainClass() {
             finish()
         }
         registerbutton.setOnClickListener {
-            lifecycleScope.launch(Dispatchers.IO) {
                 register(name.text.toString(), email.text.toString(), pass.text.toString())
-                storeValues(name.text.toString(), email.text.toString())
 
-            }
         }
 
 
-    }
-    fun getURL(nombreURL: String): String? {
-        val jsonString = applicationContext.assets.open("urls.json").bufferedReader().use { it.readText() }
-        val json = JSONObject(jsonString)
-        return json.optString(nombreURL)
-    }
-
-    private suspend fun storeValues(username: String, email: String) {
-        dataStore.edit { preferences ->
-            preferences[stringPreferencesKey("name")] = username
-            preferences[stringPreferencesKey("email")] = email
-        }
-        startActivity(Intent(this@RegisterUserActivity, MainActivity::class.java))
-        finish()
     }
 
 
 private fun register(name: String, email: String, pass: String){
     val url = getURL("inserction")
-    val queue = Volley.newRequestQueue(this)
+    val queue: RequestQueue = Volley.newRequestQueue(this)
 
 
     val r = object :  StringRequest(Request.Method.POST,url, Response.Listener<String> { response ->
+
+        if(response == "Ya existe un usuario con ese nombre y correo"){
+            Toast.makeText(this,response, Toast.LENGTH_SHORT).show()
+
+        }else {
+
         try {
             val jsonResponse = JSONObject(response)
 
-            val nickname = jsonResponse.getString("nickname")
+            val nickname = jsonResponse.optString("nickname")
 
 
             Toast.makeText(this,"Bienvenido, $nickname", Toast.LENGTH_SHORT).show()
+            lifecycleScope.launch(Dispatchers.IO) {
+                storeValues(name, email)
+            }
+            startActivity(Intent(this@RegisterUserActivity, MainActivity::class.java))
+            finish()
 
         } catch (e: JSONException) {
             // Handle JSON parsing error
-            Toast.makeText(this, "Datos incorrectos", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Ha ocurrido un error, inténtelo más tarde", Toast.LENGTH_SHORT).show()
+        }
+
         }
         
     }, Response.ErrorListener { error ->

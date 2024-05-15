@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="380dp"
+    android:layout_height="750dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardBackgroundColor="@color/background"
+    android:elevation="10dp"
+    app:cardCornerRadius="5dp"
+    android:layout_gravity="center">
+
+    <ImageButton
+        android:id="@+id/button3"
+        android:contentDescription="Botón de volver"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="left|top"
+
+
+        android:text="Regresar"
+        android:src="@mipmap/back"/>
+
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="70dp"
+    android:contentDescription="@string/setting">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+
+        android:orientation="vertical">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/defaultAvatar"
+            android:layout_width="280dp"
+            android:layout_height="250dp"
+            android:layout_gravity="center"
+
+            android:layout_marginBottom="25dp"
+            android:layout_marginTop="5dp"
+
+            android:background="@drawable/avatar_background"
+
+            app:lottie_loop="true"
+            app:lottie_autoPlay="true"
+            app:lottie_rawRes="@raw/avatar" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/hdAvatar"
+            android:layout_width="280dp"
+            android:layout_height="250dp"
+            android:layout_gravity="center"
+
+            android:layout_marginBottom="25dp"
+
+            android:background="@drawable/avatar_background"
+
+            app:lottie_loop="true"
+            app:lottie_autoPlay="true"
+            app:lottie_rawRes="@raw/avatar3" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="280dp"
+            android:layout_height="250dp"
+            android:layout_gravity="center"
+
+            android:layout_marginBottom="25dp"
+
+            android:background="@drawable/avatar_background"
+
+            app:lottie_loop="true"
+            app:lottie_autoPlay="true"/>
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="280dp"
+            android:layout_height="250dp"
+            android:layout_gravity="center"
+
+            android:layout_marginBottom="25dp"
+
+            android:background="@drawable/avatar_background"
+
+            app:lottie_loop="true"
+            app:lottie_autoPlay="true" />
+
+
+
+    </LinearLayout>
+</ScrollView>
+
+</androidx.cardview.widget.CardView>

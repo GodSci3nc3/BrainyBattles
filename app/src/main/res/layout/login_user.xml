@@ -13,6 +13,8 @@
         android:id="@+id/textView17"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -22,7 +24,7 @@
 
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
-        app:lottie_rawRes="@raw/circles" />
+        app:lottie_rawRes="@raw/stars" />
 
     <LinearLayout
         android:id="@+id/linearLayout2"
@@ -119,10 +121,10 @@
 
         <Button
             android:id="@+id/loginregisterbutton"
-            android:layout_width="260dp"
+            android:layout_width="240dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
-            android:background="@drawable/navy_gradient"
+            android:background="@drawable/categorias_buttons_background"
             android:gravity="center"
             android:text="@string/login"
 
@@ -131,7 +133,6 @@
             android:textSize="20sp"
             android:textStyle="bold"
             android:transitionName="sharedButtonTransition"
-            android:translationY="-40dp"
 
 
             app:backgroundTint="@null" />
@@ -144,8 +145,7 @@
             android:layout_gravity="center"
             android:layout_margin="40dp"
             android:gravity="center"
-            android:text="¿Aún no tienes una cuenta? \n Regístrate aquí"
-            android:translationY="-70dp" />
+            android:text="¿Aún no tienes una cuenta? \n Regístrate aquí" />
 
     </LinearLayout>
 

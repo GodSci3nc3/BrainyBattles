@@ -8,7 +8,7 @@
     <color name="greenandblue_start">#418EE0</color>
     <color name="greenandblue_end">#52D946</color>
     <color name="blue">#0A4070</color>
-        <color name="white">#FFFFFFFF</color>
+    <color name="white">#FFFFFFFF</color>
     <color name="orange">#f78441</color>
     <color name = "darkblue">#272a57</color>
     <color name="sky">#288eef</color>
@@ -16,12 +16,13 @@
     <color name="selected_color_menu">#288eef</color>
     <color name="darkred">#BB1D1D</color>
     <color name="darkgreen">#61E90D</color>
-    <color name="light">#f3f1f7</color>
+    <color name="light">#E7E6E8</color>
     <color name="purple">#8c72ed</color>
+    <color name="dark_purple">#2C3DDA</color>
     <color name="two_blue">#45beb9</color>
     <color name="red">#f55150</color>
     <color name="green">#34d287</color>
-    <color name="grey">#e9e7f2</color>
+    <color name="grey">#f2f0f7</color>
     <color name="background">#FFFFFFFF</color>
     <color name="textColor">#1B1A1A</color>
 

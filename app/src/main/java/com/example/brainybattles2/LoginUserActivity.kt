@@ -34,7 +34,7 @@ class LoginUserActivity : MainClass() {
         window.sharedElementEnterTransition.duration = 1000
 
 
-        //Animaciones de inicio
+        // Animaciones de inicio
         val loginbutton = findViewById<Button>(R.id.loginregisterbutton)
         val registerbutton = findViewById<TextView>(R.id.textView16)
 
@@ -42,18 +42,15 @@ class LoginUserActivity : MainClass() {
         val email = findViewById<EditText>(R.id.email)
         val pass = findViewById<EditText>(R.id.pass)
 
-        //Envió sus datos
+        // Ha enviado sus datos
         loginbutton.setOnClickListener {
-            lifecycleScope.launch(Dispatchers.IO) {
+
             login(email.text.toString(), pass.text.toString(), name.text.toString())
 
-                storeValues(pass.text.toString(), email.text.toString())
-
-            // Esto es para testing
+            // Testing
              /*login("prueba@gmail.com", "123", "arturo")
              startActivity(Intent(this,MainActivity::class.java))*/
 
-            }
 }
 registerbutton.setOnClickListener {
 
@@ -63,29 +60,11 @@ val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
 
 val intent = Intent(this, RegisterUserActivity::class.java)
 startActivity(intent, options.toBundle())
-    finish()
 }
 
 
 
 }
-    fun getURL(nombreURL: String): String? {
-        val jsonString = applicationContext.assets.open("urls.json").bufferedReader().use { it.readText() }
-        val json = JSONObject(jsonString)
-        return json.optString(nombreURL)
-    }
-
-
-    private suspend fun storeValues(username: String, email: String) {
-        Log.d("DataStore", "Storing username: $username and email: $email")
-
-        dataStore.edit { preferences ->
-            preferences[stringPreferencesKey("name")] = username
-            preferences[stringPreferencesKey("email")] = email
-        }
-
-    }
-
 
 
 fun login(email: String, name:String, pass: String){
@@ -93,22 +72,36 @@ fun login(email: String, name:String, pass: String){
 val URL = getURL("login")
 val queue:RequestQueue = Volley.newRequestQueue(this)
 
-val r = object :  StringRequest(Request.Method.POST,URL, Response.Listener<String> { response ->
+    val r = object : StringRequest(Request.Method.POST, URL, Response.Listener<String> { response ->
+        try {
+            val jsonResponse = JSONObject(response)
+            val apodo = jsonResponse.optString("name", "")
+            val nickname = jsonResponse.optString("nickname", "")
 
-   val jsonResponse = JSONObject(response)
-    val apodo = jsonResponse.getString("Apodo")
-    val nickname = jsonResponse.getString("nickname")
+            if (apodo.isNotEmpty()) {
+                Toast.makeText(this, "Bienvenido, $apodo", Toast.LENGTH_SHORT).show()
+            } else if (nickname.isNotEmpty()) {
+                Toast.makeText(this, "Bienvenido, $nickname", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Datos incorrectos", Toast.LENGTH_SHORT).show()
+            }
 
-    if (apodo != ""){
-   Toast.makeText(this,"Bienvenido, $apodo", Toast.LENGTH_SHORT).show()} else {
-        Toast.makeText(this,"Bienvenido, $nickname", Toast.LENGTH_SHORT).show()
-    }
-    startActivity(Intent(this@LoginUserActivity, MainActivity::class.java))
-    finish()
+            lifecycleScope.launch(Dispatchers.IO) {
+                storeValues(name, email)
+            }
 
-}, Response.ErrorListener { error ->
-Toast.makeText(this,"$error", Toast.LENGTH_SHORT).show()
-})
+            startActivity(Intent(this@LoginUserActivity, MainActivity::class.java))
+            finish()
+        } catch (e: JSONException) {
+            if (response == "Datos incorrectos" || response == "Método no permitido") {
+                Toast.makeText(this, response, Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Error al analizar la respuesta JSON", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }, Response.ErrorListener { error ->
+        Toast.makeText(this, "$error", Toast.LENGTH_SHORT).show()
+    })
 {
 override fun getParams(): MutableMap<String, String>? {
    val parameters = HashMap<String, String>()

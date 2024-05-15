@@ -2,15 +2,17 @@
     <string name="app_name">BrainyBattles(2)</string>
     <string name="social">No tienes amigos todavía</string>
     <string name="login">Inicia sesión</string>
-    <string name="register">Regístrate para poder jugar</string>
+    <string name="register">Registrarse</string>
     <string name="nombre">Ingresa tu nombre</string>
-    <string name="pass">Contraseña</string>
+    <string name="pass">Ingresa tu contraseña</string>
     <string name="cuberotating">cuberotating</string>
     <string name="nickname_change">Cambiar mi apodo</string>
     <string name="change">Ingresa el cambio</string>
     <string name="setting">Configuración</string>
     <string name="correo">Correo</string>
     <string name="delete">Eliminar la cuenta</string>
+    <string name="session">Cerrar Sesión</string>
+    <string name="avatar">Cambiar mi avatar</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

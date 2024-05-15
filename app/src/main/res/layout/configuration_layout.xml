@@ -2,7 +2,7 @@
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="360dp"
-    android:layout_height="450dp"
+    android:layout_height="550dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardBackgroundColor="@color/background"
     app:cardCornerRadius="5dp"
@@ -12,11 +12,8 @@
         android:id="@+id/button3"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_gravity="top|left"
+        android:layout_gravity="left|top"
 
-        android:layout_margin="5dp"
-
-        android:contentDescription="Boton de regresar"
 
         android:text="Regresar"
         android:src="@mipmap/back"
@@ -32,23 +29,32 @@
 
 
 
-        <ImageView
-            android:layout_width="220dp"
-            android:layout_height="220dp"
-
-            android:background="@mipmap/warning"
-            />
 
         <TextView
             android:id="@+id/notice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
+            android:layout_margin="8dp"
+
             android:padding="8dp"
             android:textSize="18sp"
+            android:textAlignment="viewStart"
+            android:text="Esta es la configuración de BrainyBattles. "/>
+
+
+        <TextView
+            android:id="@+id/notice2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:text="Mensaje de aviso y advertencia"/>
+
+            android:textAlignment="viewStart"
+            android:padding="8dp"
+            android:textSize="18sp"
+            android:text="Tener precaución a cualquier cambio a realizar"/>
+
+
+
 
         <EditText
             android:id="@+id/editTextTextPassword"

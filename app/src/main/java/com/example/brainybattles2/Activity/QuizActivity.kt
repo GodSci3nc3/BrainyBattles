@@ -11,11 +11,12 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.example.brainy_bat.Adapter.QuestionAdapter
 import com.example.brainy_bat.Domain.QuestionModel
+import com.example.brainybattles2.MainClass
 import com.example.brainybattles2.R
 import com.example.brainybattles2.databinding.ActivityQuizBinding
 
 
-class QuizActivity : AppCompatActivity(),QuestionAdapter.score {
+class QuizActivity : MainClass(),QuestionAdapter.score {
     private lateinit var binding: ActivityQuizBinding
     var position:Int=0
     var recievedList : MutableList<QuestionModel> = mutableListOf()

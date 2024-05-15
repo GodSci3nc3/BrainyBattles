@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.Window
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -75,9 +76,12 @@ menu = findViewById(R.id.menu)
 val playbutton = findViewById<LottieAnimationView>(R.id.playbutton)
 nombre = findViewById(R.id.username)
 correo = findViewById(R.id.email)
-val name = findViewById<Button>(R.id.change_username)
 val change_apodo = findViewById<Button>(R.id.button5)
 val delete : Button = findViewById(R.id.button2)
+val logoutuser : Button = findViewById(R.id.logout)
+val configbtn : Button = findViewById(R.id.configbtn)
+val changeavatar : Button = findViewById(R.id.avatarbtn)
+
 
 
 lifecycleScope.launch(Dispatchers.IO){
@@ -118,8 +122,47 @@ image_button.setOnClickListener{
 }
 
 
+    playbutton.setOnClickListener{
+        playbutton.playAnimation()
+    }
 
-binding.apply {
+
+    delete.setOnClickListener {
+        val message = "Aviso: ¡Esto eliminará su cuenta permanentemente!"
+        deleteDialog(message, nombre.text.toString(), correo.text.toString())
+
+    }
+
+
+
+    nombre.setOnClickListener{
+        val message = "¡Personalice su nombre cuantas veces desee!"
+        val data = "name"
+        edit_profile(message, data, nombre!!, nombre.text.toString(), correo.text.toString())
+
+    }
+
+    change_apodo.setOnClickListener {
+        val message = "¡Usa el apodo que tú quieras!"
+        val data = "nickname"
+        edit_profile(message, data, nombre!!, nombre.text.toString(), correo.text.toString())
+
+    }
+
+    logoutuser.setOnClickListener{
+        val message = "Si cierras tu sesión, tendrás que regresar al login, " +
+                "donde no podrás jugar hasta que ingreses tus datos de nuevo."
+        logoutUser(message)
+    }
+
+    configbtn.setOnClickListener{
+        configDialog()
+    }
+
+    changeavatar.setOnClickListener { dialogAvatar() }
+
+
+    binding.apply {
 
 
 menu.setItemSelected(R.id.Profile)
@@ -129,47 +172,15 @@ menu.setOnItemSelectedListener {
   if (it == R.id.Home) startActivity(Intent(this@ProfileUserActivity, MainActivity::class.java))
 }
 
-playbutton.setOnClickListener{
-    playbutton.playAnimation()
-}
-
-
-delete.setOnClickListener {
-  val message = "Aviso: ¡Esto eliminará su cuenta permanentemente!"
-  dialog(message, nombre.text.toString(), correo.text.toString())
-
-}
-
-
-
-name.setOnClickListener{
-  val message = "¡Personalice su nombre cuantas veces desee!"
-  val data = "name"
- edit_profile(message, data, nombre!!, nombre.text.toString(), correo.text.toString())
-
-}
-
-change_apodo.setOnClickListener {
-  val message = "¡Usa el apodo que tú quieras!"
-  val data = "nickname"
-  edit_profile(message, data, nombre!!, nombre.text.toString(), correo.text.toString())
-
-}
-
-
 }
 
 
 
 }
 
-fun getURL(nombreURL: String): String? {
-val jsonString = applicationContext.assets.open("urls.json").bufferedReader().use { it.readText() }
-val json = JSONObject(jsonString)
-return json.optString(nombreURL)
-}
 
-private fun dialog(message: String, nombre: String, correo: String) {
+
+private fun deleteDialog(message: String, nombre: String, correo: String) {
 val dialog = Dialog(this)
 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
 dialog.setCancelable(false)
@@ -179,7 +190,7 @@ dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 val notice   :   TextView = dialog.findViewById(R.id.notice)
 val pass    :   EditText = dialog.findViewById(R.id.editTextTextPassword)
 val access  :   Button = dialog.findViewById(R.id.button4)
-val back  :   Button = dialog.findViewById(R.id.button3)
+val back  :   ImageButton = dialog.findViewById(R.id.button3)
 
 
 notice.text = message
@@ -231,12 +242,6 @@ access.setOnClickListener {
 dialog.show()
 
 return upgrade.text.toString()
-}
-
-private suspend fun changeMyInformation(data: String, update: String) {
-dataStore.edit { preferences ->
-  preferences[stringPreferencesKey(data)] = update
-}
 }
 
 /*
@@ -337,28 +342,109 @@ val r = object: StringRequest(Request.Method.POST,URL, Response.Listener { respo
 queue.add(r)
 }
 
+    fun image_change(image_uri: Uri?, username: String, email: String){
+    val URL = getURL("image_change")
+    val queue = Volley.newRequestQueue(this)
 
-fun image_change(image_uri: Uri?, username: String, email: String){
-val URL = getURL("image_change")
-val queue = Volley.newRequestQueue(this)
+    val r = object :  StringRequest(Request.Method.POST,URL, Response.Listener { response ->
 
-val r = object :  StringRequest(Request.Method.POST,URL, Response.Listener { response ->
+      Toast.makeText(this, response, Toast.LENGTH_LONG).show()
+    }, Response.ErrorListener { error ->
+      Toast.makeText(this,"error: $error", Toast.LENGTH_LONG).show()
+    })
+    {
+      override fun getParams(): MutableMap<String, String>? {
+          val parameters = HashMap<String, String>()
+          parameters.put("nombre", username)
+          parameters.put("correo", email)
+          parameters.put("foto", image_uri.toString())
 
-  Toast.makeText(this, response, Toast.LENGTH_LONG).show()
-}, Response.ErrorListener { error ->
-  Toast.makeText(this,"error: $error", Toast.LENGTH_LONG).show()
-})
-{
-  override fun getParams(): MutableMap<String, String>? {
-      val parameters = HashMap<String, String>()
-      parameters.put("nombre", username)
-      parameters.put("correo", email)
-      parameters.put("foto", image_uri.toString())
+          return parameters
+      }
+    }
+    queue.add(r)
+    }
 
-      return parameters
-  }
-}
-queue.add(r)
-}
+
+    private fun logoutUser(message: String) {
+        val dialog = Dialog(this)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(false)
+        dialog.setContentView(R.layout.dialog_layout)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        val notice   :   TextView = dialog.findViewById(R.id.notice)
+        val access  :   Button = dialog.findViewById(R.id.button4)
+        val back  :   ImageButton = dialog.findViewById(R.id.button3)
+
+
+        notice.text = message
+
+        back.setOnClickListener {
+            dialog.dismiss()
+        }
+        access.setOnClickListener {
+
+            val dataStoreManager = MainClass()
+            dataStoreManager.clearData()
+
+            startActivity(Intent(this@ProfileUserActivity, splash::class.java))
+            finish()
+        }
+        dialog.show()
+
+    }
+
+    private fun configDialog(){
+        val dialog = Dialog(this)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(false)
+        dialog.setContentView(R.layout.dialog_layout)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+
+        val back  :   ImageButton? = dialog.findViewById(R.id.button3)
+
+        back?.setOnClickListener { dialog.dismiss() }
+
+
+        dialog.show()
+
+    }
+
+
+    private fun dialogAvatar() {
+        val dialog = Dialog(this)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(false)
+        dialog.setContentView(R.layout.select_avatar)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+
+        val back  :   ImageButton? = dialog.findViewById(R.id.button3)
+        val defaultAvatar : LottieAnimationView = dialog.findViewById(R.id.defaultAvatar)
+        val hdAvatar : LottieAnimationView = dialog.findViewById(R.id.hdAvatar)
+
+
+        back?.setOnClickListener { dialog.dismiss() }
+        // Primer avatar seleccionado
+        defaultAvatar.setOnClickListener {
+            lifecycleScope.launch(Dispatchers.IO) {
+            changeMyInformation("avatar", "defaultAvatar")
+            }
+        }
+        // Segundo avatar seleccionado
+        hdAvatar.setOnClickListener {
+            lifecycleScope.launch(Dispatchers.IO) {
+                changeMyInformation("avatar", "hdAvatar")
+            }
+        }
+
+
+
+
+        dialog.show()
+
+    }
 
 }

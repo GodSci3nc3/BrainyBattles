@@ -3,6 +3,8 @@ package com.example.brainybattles2
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.Window
 import android.widget.ImageView
@@ -82,7 +84,8 @@ class MainActivity : MainClass() {
 
 
         menu = findViewById(R.id.menu)
-        val playbutton = findViewById<LottieAnimationView>(R.id.playbutton)
+        val playbutton = findViewById<LottieAnimationView>(R.id.playbuton)
+        val playbuton = findViewById<TextView>(R.id.textView9)
         val saludo = findViewById<TextView>(R.id.textView3)
         val profile = findViewById<ImageView>(R.id.imageView4)
 
@@ -157,9 +160,28 @@ class MainActivity : MainClass() {
 
         menu.setOnItemSelectedListener { if (it == R.id.Profile) startActivity(Intent(this@MainActivity, ProfileUserActivity::class.java)) }
 
+            playbuton.setOnClickListener{
+                playbutton.playAnimation()
+                val handler = Handler(Looper.getMainLooper())
+                handler.postDelayed({
+
+                    val intent = Intent(this@MainActivity, QuizActivity::class.java)
+                    intent.putParcelableArrayListExtra("list", ArrayList(question))
+                    startActivity(intent)
+                }, 1500)
+
+            }
             playbutton.setOnClickListener{
                 playbutton.playAnimation()
-            }
+                val handler = Handler(Looper.getMainLooper())
+                handler.postDelayed({
+
+                    val intent = Intent(this@MainActivity, QuizActivity::class.java)
+                    intent.putParcelableArrayListExtra("list", ArrayList(question))
+                    startActivity(intent)
+                }, 1500)
+
+           }
 
             singleBtn.setOnClickListener {
                 val intent = Intent(this@MainActivity, QuizActivity::class.java)
@@ -170,11 +192,6 @@ class MainActivity : MainClass() {
 
     }
 
-    fun getURL(nombreURL: String): String? {
-        val jsonString = applicationContext.assets.open("urls.json").bufferedReader().use { it.readText() }
-        val json = JSONObject(jsonString)
-        return json.optString(nombreURL)
-    }
 
 
    fun goProfile(username: String, email: String, apodo: String?){
