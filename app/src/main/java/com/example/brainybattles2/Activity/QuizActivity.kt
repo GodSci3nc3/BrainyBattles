@@ -1,8 +1,10 @@
 package com.example.brainybattles2.Activity
 
 import android.content.Intent
+import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.view.Window
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,6 +20,7 @@ import com.example.brainybattles2.databinding.ActivityQuizBinding
 
 class QuizActivity : MainClass(),QuestionAdapter.score {
     private lateinit var binding: ActivityQuizBinding
+    private lateinit var timer: CountDownTimer
     var position:Int=0
     var recievedList : MutableList<QuestionModel> = mutableListOf()
     var allScore=0
@@ -32,8 +35,15 @@ class QuizActivity : MainClass(),QuestionAdapter.score {
 
         recievedList=intent.getParcelableArrayListExtra<QuestionModel>("list")!!.toMutableList()
 
+        val mediaplayer = MediaPlayer.create(this@QuizActivity,R.raw.quizz_bgm)
+
         binding.apply {
-            backBtn.setOnClickListener{finish()}
+            mediaplayer.start()
+            backBtn.setOnClickListener{
+                mediaplayer.stop()
+                timer.cancel()
+                finish()
+            }
 
             progressBar.progress=1
 
@@ -48,6 +58,7 @@ class QuizActivity : MainClass(),QuestionAdapter.score {
                 .into(QuestionPic)
 
                 loadAnswers()
+                totalTimer()
 
                 rightArrow.setOnClickListener {
                     //PRUEBA
@@ -55,6 +66,8 @@ class QuizActivity : MainClass(),QuestionAdapter.score {
                         val intent= Intent(this@QuizActivity, ScoreActivity::class.java)
                         intent.putExtra("Score",allScore)
                         startActivity(intent)
+                        timer.cancel()
+                        mediaplayer.stop()
                         finish()
                         return@setOnClickListener
                     }
@@ -76,8 +89,19 @@ class QuizActivity : MainClass(),QuestionAdapter.score {
 
                 }
 
-                leftArrow.setOnClickListener {
-                    if(progressBar.progress==1){
+                soundBtn.setOnClickListener {
+
+                    if(mediaplayer.isPlaying){
+                        mediaplayer.pause()
+                        soundBtn.setImageResource(R.mipmap.ic_action_volume_off)
+                    }else{
+                        mediaplayer.start()
+                        soundBtn.setImageResource(R.mipmap.ic_action_volume_up)
+                    }
+
+
+
+                    /*if(progressBar.progress==1){
 
                         return@setOnClickListener
                     }
@@ -95,7 +119,7 @@ class QuizActivity : MainClass(),QuestionAdapter.score {
                         .apply(RequestOptions.bitmapTransform(RoundedCorners(60)))
                         .into(QuestionPic)
 
-                    loadAnswers()
+                    loadAnswers()*/
                 }
         }
 
@@ -128,4 +152,24 @@ class QuizActivity : MainClass(),QuestionAdapter.score {
         allScore+=number
         recievedList[position].clickedAnswer=clickedAnswer
     }
+
+    private fun totalTimer(){
+        timer = object : CountDownTimer(30000, 1000L) {
+
+            override fun onTick(millisUntilFinished: Long) {
+
+                binding.txtTime.setText(""+millisUntilFinished / 1000)
+
+            }
+
+            override fun onFinish() {
+
+                val intent = Intent(this@QuizActivity, ScoreActivity::class.java)
+                intent.putExtra("Score", allScore)
+                startActivity(intent)
+                finish()
+            }
+        }.start()
+    }
+
 }

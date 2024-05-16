@@ -34,7 +34,9 @@ class MainActivity : MainClass() {
     private fun queue(){
 
         for (i in 1..5) {
-            val url = "http://192.168.0.20/conexion_php/registro.php?id=$i"
+
+            val random = (1..84).random()
+            val url = "http://192.168.0.20/conexion_php/registro.php?id=$random"
             val queue = Volley.newRequestQueue(this)
 
             val jsonObjectRequest = JsonObjectRequest(
@@ -47,6 +49,7 @@ class MainActivity : MainClass() {
                     var respuesta3 = response.getString("respuesta3")
                     var respuesta4 = response.getString("respuesta4")
                     var respuestaC = response.getString("respuestaCorrecta")
+                    var picpath = response.getString("img")
 
                     question.add(
                         QuestionModel(
@@ -58,7 +61,7 @@ class MainActivity : MainClass() {
                             respuesta4,
                             respuestaC,
                             5,
-                            "q_$i",
+                            picpath,
                             null
                         )
                     )

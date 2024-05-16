@@ -8,16 +8,31 @@
 
 
     <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottieAnimationView3"
         android:layout_width="match_parent"
+
         android:layout_height="match_parent"
-
         android:adjustViewBounds="true"
-        android:scaleType="fitXY"
 
-        app:lottie_rawRes="@raw/space_background"
+        android:scaleType="fitXY"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
-        />
+        app:lottie_rawRes="@raw/space_background" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/lottieAnimationView3"
+        app:layout_constraintStart_toStartOf="@+id/lottieAnimationView3"
+        app:layout_constraintTop_toTopOf="@+id/lottieAnimationView3"
+
+        android:scaleType="centerInside"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/avatar" />
 
 
     <ScrollView
@@ -76,11 +91,21 @@
                     />
 
                 <ImageView
-                    android:id="@+id/leftArrow"
+                    android:id="@+id/soundBtn"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:padding="12dp"
-                    android:src="@mipmap/left_arrow" />
+                    android:padding="5dp"
+                    android:src="@mipmap/ic_action_volume_up" />
+
+                <TextView
+                    android:id="@+id/txtTime"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="5dp"
+                    android:textColor="@color/light"
+                    android:text="30"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
 
                 <ImageView
                     android:id="@+id/rightArrow"
@@ -132,8 +157,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/QuestionList"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-               />
+                android:layout_height="match_parent" />
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
