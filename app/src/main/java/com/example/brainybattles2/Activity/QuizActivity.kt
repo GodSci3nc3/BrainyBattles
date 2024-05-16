@@ -2,12 +2,16 @@ package com.example.brainybattles2.Activity
 
 import android.content.Intent
 import android.media.MediaPlayer
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.util.Log
 import android.view.Window
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.airbnb.lottie.LottieAnimationView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
@@ -16,6 +20,9 @@ import com.example.brainy_bat.Domain.QuestionModel
 import com.example.brainybattles2.MainClass
 import com.example.brainybattles2.R
 import com.example.brainybattles2.databinding.ActivityQuizBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class QuizActivity : MainClass(),QuestionAdapter.score {
@@ -31,14 +38,34 @@ class QuizActivity : MainClass(),QuestionAdapter.score {
         setContentView(binding.root)
 
         val window: Window =this@QuizActivity.window
+        val avatar = findViewById<LottieAnimationView>(R.id.selectedAvatar)
         window.statusBarColor= ContextCompat.getColor(this@QuizActivity, R.color.grey)
 
         recievedList=intent.getParcelableArrayListExtra<QuestionModel>("list")!!.toMutableList()
 
         val mediaplayer = MediaPlayer.create(this@QuizActivity,R.raw.quizz_bgm)
 
+        lifecycleScope.launch(Dispatchers.IO) {
+            getUser().collect() {
+                Log.d("DataStore", "Store avatar: ${it.avatar}")
+                withContext(Dispatchers.Main) {
+
+                    when (it.avatar) {
+                        "defaultAvatar" -> binding.selectedAvatar.setAnimation(R.raw.avatar)
+                        "hdAvatar" -> binding.selectedAvatar.setAnimation(R.raw.avatar3)
+                        // Aquí se agregan todos los avatares que se vayan creando
+                        else -> binding.selectedAvatar.setAnimation(R.raw.avatar)
+
+                    }
+                }
+            }
+        }
+
+
+
         binding.apply {
             mediaplayer.start()
+            avatar.playAnimation()
             backBtn.setOnClickListener{
                 mediaplayer.stop()
                 timer.cancel()

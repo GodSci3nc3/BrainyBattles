@@ -11,6 +11,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.datastore.core.DataStore
+import androidx.datastore.dataStore
 import androidx.lifecycle.lifecycleScope
 import com.airbnb.lottie.LottieAnimationView
 import com.android.volley.Request.Method.GET
@@ -29,50 +31,8 @@ class MainActivity : MainClass() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var menu: ChipNavigationBar
-    val question: MutableList<QuestionModel> = mutableListOf()
 
-    private fun queue(){
 
-        for (i in 1..5) {
-
-            val random = (1..84).random()
-            val url = "http://192.168.0.20/conexion_php/registro.php?id=$random"
-            val queue = Volley.newRequestQueue(this)
-
-            val jsonObjectRequest = JsonObjectRequest(
-                GET, url, null, { response ->
-
-                    var id = response.getInt("id")
-                    var pregunta = response.getString("pregunta")
-                    var respuesta1 = response.getString("respuesta1")
-                    var respuesta2 = response.getString("respuesta2")
-                    var respuesta3 = response.getString("respuesta3")
-                    var respuesta4 = response.getString("respuesta4")
-                    var respuestaC = response.getString("respuestaCorrecta")
-                    var picpath = response.getString("img")
-
-                    question.add(
-                        QuestionModel(
-                            id,
-                            pregunta,
-                            respuesta1,
-                            respuesta2,
-                            respuesta3,
-                            respuesta4,
-                            respuestaC,
-                            5,
-                            picpath,
-                            null
-                        )
-                    )
-
-                }
-            ) { error ->
-                Toast.makeText(this, error.toString(), Toast.LENGTH_LONG).show()
-            }
-            queue.add(jsonObjectRequest)
-        }
-    }
 
 
 
@@ -191,9 +151,12 @@ class MainActivity : MainClass() {
                 intent.putParcelableArrayListExtra("list", ArrayList(question))
                 startActivity(intent)
             }
+
+
             }
 
     }
+
 
 
 

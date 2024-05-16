@@ -20,6 +20,9 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+
+
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -37,6 +40,21 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <ImageButton
+                    android:id="@+id/button3"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:layout_gravity="left|top"
+                    android:layout_marginTop="44dp"
+
+
+                    android:contentDescription="Botón de volver"
+                    android:src="@mipmap/back"
+                    android:text="Regresar"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.099"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/imageView15"

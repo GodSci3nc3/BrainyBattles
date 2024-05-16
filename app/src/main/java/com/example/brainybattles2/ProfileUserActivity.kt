@@ -6,6 +6,8 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.Window
 import android.widget.Button
 import android.widget.EditText
@@ -23,6 +25,7 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.example.brainybattles2.Activity.QuizActivity
 import com.example.brainybattles2.databinding.ActivityProfileBinding
 import com.ismaeldivita.chipnavigation.ChipNavigationBar
 import kotlinx.coroutines.Dispatchers
@@ -85,7 +88,8 @@ val changeavatar : Button = findViewById(R.id.avatarbtn)
 
 
 lifecycleScope.launch(Dispatchers.IO){
-  getUser().collect(){
+    queue()
+    getUser().collect(){
       withContext(Dispatchers.Main){
 
           if (it.name.isNotEmpty() && it.email.isNotEmpty()) {
@@ -124,6 +128,14 @@ image_button.setOnClickListener{
 
     playbutton.setOnClickListener{
         playbutton.playAnimation()
+        val handler = Handler(Looper.getMainLooper())
+        handler.postDelayed({
+
+            val intent = Intent(this@ProfileUserActivity, QuizActivity::class.java)
+            intent.putParcelableArrayListExtra("list", ArrayList(question))
+            startActivity(intent)
+        }, 1500)
+
     }
 
 
@@ -430,13 +442,17 @@ queue.add(r)
         // Primer avatar seleccionado
         defaultAvatar.setOnClickListener {
             lifecycleScope.launch(Dispatchers.IO) {
-            changeMyInformation("avatar", "defaultAvatar")
+                changeMyInformation("avatar", "defaultAvatar")
+
+                dialog.dismiss()
             }
         }
         // Segundo avatar seleccionado
         hdAvatar.setOnClickListener {
             lifecycleScope.launch(Dispatchers.IO) {
                 changeMyInformation("avatar", "hdAvatar")
+
+                dialog.dismiss()
             }
         }
 
