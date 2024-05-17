@@ -250,6 +250,7 @@
                     android:orientation="horizontal">
 
                     <LinearLayout
+                        android:id="@+id/cienciaBtn"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginStart="24dp"
@@ -284,6 +285,7 @@
 
 
                     <LinearLayout
+                        android:id="@+id/musicaBtn"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginStart="8dp"
@@ -302,7 +304,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
-                            android:src="@mipmap/cat5" />
+                            android:src="@mipmap/ic_library_music" />
 
                         <TextView
                             android:id="@+id/textView14"
@@ -311,7 +313,7 @@
                             android:layout_marginStart="16dp"
                             android:layout_marginEnd="8dp"
                             android:layout_weight="1"
-                            android:text="Historia"
+                            android:text="Música"
                             android:textColor="@color/white"
                             android:textSize="20sp"
                             android:textStyle="bold" />
@@ -324,6 +326,7 @@
                     android:orientation="horizontal">
 
                     <LinearLayout
+                        android:id="@+id/cineBtn"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginStart="24dp"
@@ -358,6 +361,7 @@
 
 
                     <LinearLayout
+                        android:id="@+id/geografiaBtn"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginStart="8dp"
@@ -397,6 +401,7 @@
                     android:orientation="horizontal">
 
                     <LinearLayout
+                        android:id="@+id/deportesBtn"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginStart="24dp"
@@ -430,6 +435,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/artesBtn"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginTop="16dp"
