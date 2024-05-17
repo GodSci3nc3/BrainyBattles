@@ -7,14 +7,10 @@ import android.util.Log
 import android.view.Window
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
+
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
-import com.android.volley.Request.Method.GET
-import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.Volley
-import com.example.brainy_bat.Domain.QuestionModel
-import com.example.brainybattles2.Activity.QuizActivity
+
 import com.example.brainybattles2.databinding.ActivityMainBinding
 import com.ismaeldivita.chipnavigation.ChipNavigationBar
 import kotlinx.coroutines.Dispatchers
@@ -26,53 +22,6 @@ class MainActivity : MainClass() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var menu: ChipNavigationBar
-    val question: MutableList<QuestionModel> = mutableListOf()
-
-    private fun queue(){
-
-        for (i in 1..5) {
-
-            val random = (1..84).random()
-            val url = "http://192.168.1.90/conexion_php/registro.php?id=$random"
-            val queue = Volley.newRequestQueue(this)
-
-            val jsonObjectRequest = JsonObjectRequest(
-                GET, url, null, { response ->
-
-                    var id = response.getInt("id")
-                    var pregunta = response.getString("pregunta")
-                    var respuesta1 = response.getString("respuesta1")
-                    var respuesta2 = response.getString("respuesta2")
-                    var respuesta3 = response.getString("respuesta3")
-                    var respuesta4 = response.getString("respuesta4")
-                    var respuestaC = response.getString("respuestaCorrecta")
-                    var picpath = response.getString("img")
-
-                    question.add(
-                        QuestionModel(
-                            id,
-                            pregunta,
-                            respuesta1,
-                            respuesta2,
-                            respuesta3,
-                            respuesta4,
-                            respuestaC,
-                            5,
-                            picpath,
-                            null
-                        )
-                    )
-
-                }
-            ) { error ->
-                Toast.makeText(this, error.toString(), Toast.LENGTH_LONG).show()
-            }
-            queue.add(jsonObjectRequest)
-        }
-    }
-
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -89,7 +38,7 @@ class MainActivity : MainClass() {
 
 
         lifecycleScope.launch(Dispatchers.IO){
-            queue()
+            //queue()
             getUser().collect(){
                 Log.d("DataStore", "Store picture: ${it.picture}")
                 withContext(Dispatchers.Main){
@@ -159,12 +108,58 @@ class MainActivity : MainClass() {
             menu.setOnItemSelectedListener { if (it == R.id.Profile) startActivity(Intent(this@MainActivity, ProfileUserActivity::class.java)) }
 
             singleBtn.setOnClickListener {
-                val intent = Intent(this@MainActivity, QuizActivity::class.java)
-                intent.putParcelableArrayListExtra("list", ArrayList(question))
-                startActivity(intent)
-            }
+
+                // AQUÍ SE INICIARIA LA CARGA DE PREGUNTAS
+
+                val i = Intent(this@MainActivity, splash::class.java).apply {
+                    putExtra("carga",0)
+                }
+                startActivity(i)
+
             }
 
+            artesBtn.setOnClickListener{
+                val i = Intent(this@MainActivity, splash::class.java).apply {
+                    putExtra("carga",1)
+                }
+                startActivity(i)
+            }
+    
+            cineBtn.setOnClickListener{
+                val i = Intent(this@MainActivity, splash::class.java).apply {
+                    putExtra("carga",2)
+                }
+                startActivity(i)
+            }
+
+            deportesBtn.setOnClickListener{
+                val i = Intent(this@MainActivity, splash::class.java).apply {
+                    putExtra("carga",3)
+                }
+                startActivity(i)
+            }
+
+            geografiaBtn.setOnClickListener{
+                val i = Intent(this@MainActivity, splash::class.java).apply {
+                    putExtra("carga",4)
+                }
+                startActivity(i)
+            }
+
+            cienciaBtn.setOnClickListener{
+                val i = Intent(this@MainActivity, splash::class.java).apply {
+                    putExtra("carga",5)
+                }
+                startActivity(i)
+            }
+
+            musicaBtn.setOnClickListener{
+                val i = Intent(this@MainActivity, splash::class.java).apply {
+                    putExtra("carga",6)
+                }
+                startActivity(i)
+            }
+            }
     }
 
     fun getURL(nombreURL: String): String? {
@@ -173,12 +168,12 @@ class MainActivity : MainClass() {
         return json.optString(nombreURL)
     }
 
-
+/*
    fun goProfile(username: String, email: String, apodo: String?){
 
 
 
-    /*
+
        val dialog = Dialog(this)
        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
        dialog.setCancelable(false)
@@ -198,9 +193,9 @@ class MainActivity : MainClass() {
        transaction.replace(R.id.frame_container, fragment) // Reemplaza "fragment_container" con el ID de tu contenedor de fragmentos
        transaction.addToBackStack(null) // Opcional, para agregar la transacción al back stack
        transaction.commit()
-*/
 
-    }
+
+    }*/
 
 /*
     fun FindMyUser(username: String, email: String, saludo:TextView, profile:ImageView){
