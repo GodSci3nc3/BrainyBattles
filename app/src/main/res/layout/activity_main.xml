@@ -233,7 +233,7 @@
                         android:layout_marginBottom="8dp"
                         android:layout_weight="0.5"
                         android:background="@drawable/categorias_buttons_background"
-                        android:elevation="3dp"
+                        android:elevation="5dp"
                         android:gravity="center"
                         android:orientation="horizontal">
 
@@ -269,7 +269,7 @@
                         android:layout_weight="0.5"
                         android:background="@drawable/categorias_buttons_background"
 
-                        android:elevation="3dp"
+                        android:elevation="5dp"
                         android:gravity="center"
                         android:orientation="horizontal">
 
@@ -309,7 +309,7 @@
                         android:layout_marginBottom="8dp"
                         android:layout_weight="0.5"
                         android:background="@drawable/categorias_buttons_background"
-                        android:elevation="3dp"
+                        android:elevation="5dp"
                         android:gravity="center"
                         android:orientation="horizontal">
 
@@ -344,7 +344,7 @@
                         android:layout_marginBottom="8dp"
                         android:layout_weight="0.5"
                         android:background="@drawable/categorias_buttons_background"
-                        android:elevation="3dp"
+                        android:elevation="5dp"
                         android:gravity="center"
                         android:orientation="horizontal">
 
@@ -385,7 +385,7 @@
                         android:layout_marginBottom="8dp"
                         android:layout_weight="0.5"
                         android:background="@drawable/categorias_buttons_background"
-                        android:elevation="3dp"
+                        android:elevation="5dp"
                         android:gravity="center"
                         android:orientation="horizontal">
 
@@ -418,7 +418,7 @@
                         android:layout_marginBottom="8dp"
                         android:layout_weight="0.5"
                         android:background="@drawable/categorias_buttons_background"
-                        android:elevation="3dp"
+                        android:elevation="5dp"
                         android:gravity="center"
                         android:orientation="horizontal">
 
@@ -506,6 +506,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_margin="24dp"
+                android:padding="5dp"
                 android:background="@drawable/play_background">
 
 
@@ -515,6 +516,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="Dale seguimiento a tu puntaje"
+                    android:padding="10dp"
                     android:textAlignment="center"
                     android:textColor="?attr/titles"
                     android:textSize="28sp"
@@ -528,7 +530,7 @@
                     android:layout_height="65dp"
 
 
-                    android:layout_marginTop="29dp"
+                    android:layout_marginTop="5dp"
 
 
                     android:background="@drawable/categorias_buttons_background"

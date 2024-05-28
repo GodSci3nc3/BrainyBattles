@@ -8,11 +8,20 @@
 
     </style>
 
-    <style name="Theme.BrainyBattles2" parent="Base.Theme.BrainyBattles2" >
+    <style name="Theme.BrainyBattles2" parent="Base.Theme.BrainyBattles2">
         <item name="android:windowFullscreen">true</item>
     </style>
 
     <style name="splashtheme" parent="Base.Theme.BrainyBattles2">
-    <item name="android:windowBackground">@drawable/splashscreen</item>
-        </style>
+        <item name="android:windowBackground">@drawable/splashscreen</item>
+    </style>
+
+    <style name="Theme.BrainyBattles2.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.BrainyBattles2.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.BrainyBattles2.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

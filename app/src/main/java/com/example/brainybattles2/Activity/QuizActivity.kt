@@ -38,7 +38,6 @@ class QuizActivity : MainClass(),QuestionAdapter.score {
         setContentView(binding.root)
 
         val window: Window =this@QuizActivity.window
-        val avatar = findViewById<LottieAnimationView>(R.id.selectedAvatar)
         window.statusBarColor= ContextCompat.getColor(this@QuizActivity, R.color.grey)
 
         recievedList=intent.getParcelableArrayListExtra<QuestionModel>("list")!!.toMutableList()
@@ -46,16 +45,22 @@ class QuizActivity : MainClass(),QuestionAdapter.score {
         val mediaplayer = MediaPlayer.create(this@QuizActivity,R.raw.quizz_bgm)
 
         lifecycleScope.launch(Dispatchers.IO) {
-            getUser().collect() {
+            getUser().collect {
                 Log.d("DataStore", "Store avatar: ${it.avatar}")
                 withContext(Dispatchers.Main) {
-
                     when (it.avatar) {
-                        "defaultAvatar" -> binding.selectedAvatar.setAnimation(R.raw.avatar)
-                        "hdAvatar" -> binding.selectedAvatar.setAnimation(R.raw.avatar3)
-                        // Aquí se agregan todos los avatares que se vayan creando
-                        else -> binding.selectedAvatar.setAnimation(R.raw.avatar)
-
+                        "bluemen1" -> binding.selectedAvatar.setImageResource(R.mipmap.blue_men1)
+                        "greenmen1" -> binding.selectedAvatar.setImageResource(R.mipmap.greenmen1)
+                        "purplemen1" -> binding.selectedAvatar.setImageResource(R.mipmap.purplemen1)
+                        "redmen1" -> binding.selectedAvatar.setImageResource(R.mipmap.redmen1)
+                        "whitemen1" -> binding.selectedAvatar.setImageResource(R.mipmap.whitemen1)
+                        "yellowmen1" -> binding.selectedAvatar.setImageResource(R.mipmap.yellowmen1)
+                        "mintwomen1" -> binding.selectedAvatar.setImageResource(R.mipmap.mintwomen1)
+                        "pinkwomen1" -> binding.selectedAvatar.setImageResource(R.mipmap.pinkwomen1)
+                        "skywomen1" -> binding.selectedAvatar.setImageResource(R.mipmap.skywomen1)
+                        "whitewomen1" -> binding.selectedAvatar.setImageResource(R.mipmap.whitewomen1)
+                        "yellowomen1" -> binding.selectedAvatar.setImageResource(R.mipmap.yellowomen1)
+                        else -> binding.selectedAvatar.setImageResource(R.mipmap.blue_men1)
                     }
                 }
             }
@@ -65,7 +70,6 @@ class QuizActivity : MainClass(),QuestionAdapter.score {
 
         binding.apply {
             mediaplayer.start()
-            avatar.playAnimation()
             backBtn.setOnClickListener{
                 mediaplayer.stop()
                 timer.cancel()

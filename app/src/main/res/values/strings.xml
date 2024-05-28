@@ -1,6 +1,5 @@
 <resources>
-    <string name="app_name">BrainyBattles(2)</string>
-    <string name="social">No tienes amigos todavía</string>
+    <string name="app_name">BrainyBattles</string>
     <string name="login">Inicia sesión</string>
     <string name="register">Registrarse</string>
     <string name="nombre">Ingresa tu nombre</string>
@@ -15,4 +14,7 @@
     <string name="avatar">Cambiar mi avatar</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_information">InformationActivity</string>
+    <string name="tab_text_1">Categorías en BrainyBattles</string>
+    <string name="tab_text_2">Ciencia</string>
 </resources>

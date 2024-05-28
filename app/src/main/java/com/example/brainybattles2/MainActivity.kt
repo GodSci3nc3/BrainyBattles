@@ -5,9 +5,12 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.Layout
 import android.util.Log
 import android.view.Window
+import android.widget.Button
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -51,6 +54,9 @@ class MainActivity : MainClass() {
         val playbuton = findViewById<TextView>(R.id.textView9)
         val saludo = findViewById<TextView>(R.id.textView3)
         val profile = findViewById<ImageView>(R.id.imageView4)
+
+        //Categorías
+        val sciencebtn = findViewById<LinearLayout>(R.id.Science)
 
 
         lifecycleScope.launch(Dispatchers.IO){
@@ -116,9 +122,13 @@ class MainActivity : MainClass() {
 
         }
 
+        sciencebtn.setOnClickListener { startActivity(Intent(this@MainActivity, InformationActivity::class.java)) }
+
+
 
         binding.apply {
 
+            //Controladores
             menu.setItemSelected(R.id.Home)
 
         menu.setOnItemSelectedListener { if (it == R.id.Profile) startActivity(Intent(this@MainActivity, ProfileUserActivity::class.java)) }

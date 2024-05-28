@@ -11,6 +11,7 @@ import android.os.Looper
 import android.view.Window
 import android.widget.Button
 import android.widget.EditText
+import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
@@ -79,12 +80,12 @@ menu = findViewById(R.id.menu)
 val playbutton = findViewById<LottieAnimationView>(R.id.playbutton)
 nombre = findViewById(R.id.username)
 correo = findViewById(R.id.email)
-val change_apodo = findViewById<Button>(R.id.button5)
-val delete : Button = findViewById(R.id.button2)
-val logoutuser : Button = findViewById(R.id.logout)
-val configbtn : Button = findViewById(R.id.configbtn)
-val changeavatar : Button = findViewById(R.id.avatarbtn)
-
+    val change_apodo = findViewById<Button>(R.id.button5)
+    val delete : Button = findViewById(R.id.button2)
+    val logoutuser : Button = findViewById(R.id.logout)
+    val configbtn : Button = findViewById(R.id.configbtn)
+    val changeavatar : Button = findViewById(R.id.avatarbtn)
+    val goback : ImageButton = findViewById(R.id.button3)
 
 
 lifecycleScope.launch(Dispatchers.IO){
@@ -113,18 +114,46 @@ lifecycleScope.launch(Dispatchers.IO){
            
           }
 
+          when (it.avatar) {
+              // Aquí se agregan todos los avatares que se vayan creando
+
+              // Avatares hombres
+              "blue_men1" -> binding.avatarSelected.setImageResource(R.mipmap.blue_men1)
+              "greenmen1" -> binding.avatarSelected.setImageResource(R.mipmap.greenmen1)
+              "purplemen1" -> binding.avatarSelected.setImageResource(R.mipmap.purplemen1)
+              "redmen1" -> binding.avatarSelected.setImageResource(R.mipmap.redmen1)
+              "whitemen1" -> binding.avatarSelected.setImageResource(R.mipmap.whitemen1)
+              "yellowmen1" -> binding.avatarSelected.setImageResource(R.mipmap.yellowmen1)
+
+              // Avatares mujeres
+              "mintwomen1" -> binding.avatarSelected.setImageResource(R.mipmap.mintwomen1)
+              "pinkwomen1" -> binding.avatarSelected.setImageResource(R.mipmap.pinkwomen1)
+              "skywomen1" -> binding.avatarSelected.setImageResource(R.mipmap.skywomen1)
+              "whitewomen1" -> binding.avatarSelected.setImageResource(R.mipmap.whitewomen1)
+              "yellowomen1" -> binding.avatarSelected.setImageResource(R.mipmap.yellowomen1)
+
+
+              //Cuando el usuario no ha seleccionado ningún avatar
+              else -> {
+                  binding.avatarSelected.setImageResource(R.mipmap.blue_men1)
+
+              }
+
+          }
+
 
       }
   }
 }
 
 
-image_button.setOnClickListener{
+    image_button.setOnClickListener{
       pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
 
 
-}
-
+    }
+    goback.setOnClickListener { startActivity(Intent(this@ProfileUserActivity, MainActivity::class.java))
+        finish() }
 
     playbutton.setOnClickListener{
         playbutton.playAnimation()
@@ -432,35 +461,53 @@ queue.add(r)
         dialog.setContentView(R.layout.select_avatar)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
+        val back: ImageButton? = dialog.findViewById(R.id.button3)
+        val avatars = listOf(
+            //Avatares hombres
+            dialog.findViewById<FrameLayout>(R.id.blue_men1),
+            dialog.findViewById(R.id.greenmen1),
+            dialog.findViewById(R.id.purplemen1),
+            dialog.findViewById(R.id.redmen1),
+            dialog.findViewById(R.id.whitemen1),
+            dialog.findViewById(R.id.yellowmen1),
 
-        val back  :   ImageButton? = dialog.findViewById(R.id.button3)
-        val defaultAvatar : LottieAnimationView = dialog.findViewById(R.id.defaultAvatar)
-        val hdAvatar : LottieAnimationView = dialog.findViewById(R.id.hdAvatar)
-
+            //Avatares mujeres
+            dialog.findViewById(R.id.mintwomen1),
+            dialog.findViewById(R.id.pinkwomen1),
+            dialog.findViewById(R.id.skywomen1),
+            dialog.findViewById(R.id.whitewomen1),
+            dialog.findViewById(R.id.yellowomen1)
+        )
 
         back?.setOnClickListener { dialog.dismiss() }
-        // Primer avatar seleccionado
-        defaultAvatar.setOnClickListener {
-            lifecycleScope.launch(Dispatchers.IO) {
-                changeMyInformation("avatar", "defaultAvatar")
 
-                dialog.dismiss()
+        avatars.forEach { frameLayout ->
+            frameLayout.setOnClickListener {
+                val avatarId = when (frameLayout.id) {
+                    R.id.blue_men1 -> "bluemen1"
+                    R.id.greenmen1 -> "greenmen1"
+                    R.id.purplemen1 -> "purplemen1"
+                    R.id.redmen1 -> "redmen1"
+                    R.id.whitemen1 -> "whitemen1"
+                    R.id.yellowmen1 -> "yellowmen1"
+                    R.id.mintwomen1 -> "mintwomen1"
+                    R.id.pinkwomen1 -> "pinkwomen1"
+                    R.id.skywomen1 -> "skywomen1"
+                    R.id.whitewomen1 -> "whitewomen1"
+                    R.id.yellowomen1 -> "yellowomen1"
+                    else -> null
+                }
+
+                if (avatarId != null) {
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        changeMyInformation("avatar", avatarId)
+                        dialog.dismiss()
+                    }
+                }
             }
         }
-        // Segundo avatar seleccionado
-        hdAvatar.setOnClickListener {
-            lifecycleScope.launch(Dispatchers.IO) {
-                changeMyInformation("avatar", "hdAvatar")
-
-                dialog.dismiss()
-            }
-        }
-
-
-
 
         dialog.show()
-
     }
 
 }
