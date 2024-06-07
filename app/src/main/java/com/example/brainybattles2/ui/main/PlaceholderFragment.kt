@@ -19,8 +19,6 @@ class PlaceholderFragment : Fragment() {
     private lateinit var pageViewModel: PageViewModel
     private var _binding: FragmentInformationBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,24 +38,23 @@ class PlaceholderFragment : Fragment() {
 
         val title: TextView = binding.sectionTitle
         val text: TextView = binding.sectionLabel
-        pageViewModel.text.observe(viewLifecycleOwner, Observer {
+
+        pageViewModel.title.observe(viewLifecycleOwner, Observer {
             title.text = it
+        })
+
+        pageViewModel.text.observe(viewLifecycleOwner, Observer {
             text.text = it
         })
+
         return root
     }
 
+
     companion object {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
+
         private const val ARG_SECTION_NUMBER = "section_number"
 
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
         @JvmStatic
         fun newInstance(sectionNumber: Int): PlaceholderFragment {
             return PlaceholderFragment().apply {
