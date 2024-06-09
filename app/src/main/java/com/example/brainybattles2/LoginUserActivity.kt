@@ -68,33 +68,21 @@ fun login(email: String, name:String, pass: String){
 val URL = getURL("login")
 val queue:RequestQueue = Volley.newRequestQueue(this)
 
-    val r = object : StringRequest(Request.Method.POST, URL, Response.Listener<String> { response ->
-        try {
-            val jsonResponse = JSONObject(response)
-            val apodo = jsonResponse.optString("name", "")
-            val nickname = jsonResponse.optString("nickname", "")
+    val r = object : StringRequest(Method.POST, URL, Response.Listener { response ->
 
-            if (apodo.isNotEmpty()) {
-                Toast.makeText(this, "Bienvenido, $apodo", Toast.LENGTH_SHORT).show()
-            } else if (nickname.isNotEmpty()) {
-                Toast.makeText(this, "Bienvenido, $nickname", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this, "Datos incorrectos", Toast.LENGTH_SHORT).show()
-            }
-
+        if (response == "Datos incorrectos" || response == "Método no permitido") {
+            Toast.makeText(this, response, Toast.LENGTH_SHORT).show()
+        } else {
             lifecycleScope.launch(Dispatchers.IO) {
                 storeValues(name, email)
+
+                startActivity(Intent(this@LoginUserActivity, splash::class.java))
+                finish()
             }
 
-            startActivity(Intent(this@LoginUserActivity, MainActivity::class.java))
-            finish()
-        } catch (e: JSONException) {
-            if (response == "Datos incorrectos" || response == "Método no permitido") {
-                Toast.makeText(this, response, Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this, "Error al analizar la respuesta JSON", Toast.LENGTH_SHORT).show()
-            }
+
         }
+
     }, Response.ErrorListener { error ->
         Toast.makeText(this, "$error", Toast.LENGTH_SHORT).show()
     })

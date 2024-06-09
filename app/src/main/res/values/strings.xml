@@ -17,4 +17,5 @@
     <string name="title_activity_information">InformationActivity</string>
     <string name="tab_text_1">Categorías en BrainyBattles</string>
     <string name="tab_text_2">Ciencia</string>
+    <string name="title_activity_statistics">StatisticsActivity</string>
 </resources>

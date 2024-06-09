@@ -83,7 +83,7 @@
                 <LinearLayout
                     android:layout_width="80dp"
                     android:layout_height="40dp"
-                    android:layout_gravity="center_vertical"
+                    android:layout_gravity="center"
                     android:background="@drawable/navy_background"
                     android:orientation="horizontal"
 
@@ -91,23 +91,23 @@
                     android:paddingEnd="8dp">
 
 
-                    <TextView
-                        android:id="@+id/textView13"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:paddingStart="35dp"
+                        android:layout_gravity="center">
+                    <TextView
+                        android:id="@+id/puntuation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+
 
                         android:text="0"
+                        android:textAlignment="viewEnd"
                         android:textColor="@color/white" />
 
-                    <ImageView
-                        android:id="@+id/imageView13"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:paddingStart="5dp"
-                        app:srcCompat="@mipmap/plus" />
+                    </LinearLayout>
+
                 </LinearLayout>
             </LinearLayout>
 
@@ -199,7 +199,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/textView6"
+                        android:id="@+id/seemore"
                         android:layout_width="69dp"
                         android:layout_height="22dp"
                         android:layout_marginRight="25dp"
@@ -287,7 +287,7 @@
                             android:layout_marginStart="16dp"
                             android:layout_marginEnd="8dp"
                             android:layout_weight="1"
-                            android:text="Historia"
+                            android:text="Música"
                             android:textColor="@color/white"
                             android:textSize="20sp"
                             android:textStyle="bold" />

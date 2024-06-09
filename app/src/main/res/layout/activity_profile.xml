@@ -42,14 +42,18 @@
 
                 <ImageButton
                     android:id="@+id/button3"
-                    android:layout_width="55dp"
-                    android:layout_height="55dp"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
                     android:layout_gravity="left|top"
                     android:layout_marginTop="44dp"
 
 
                     android:contentDescription="Botón de volver"
+
                     android:src="@mipmap/back"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    app:tint="#FFFFFF"
+
                     android:text="Regresar"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.099"

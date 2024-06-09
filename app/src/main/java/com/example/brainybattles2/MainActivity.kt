@@ -52,10 +52,9 @@ class MainActivity : MainClass() {
         menu = findViewById(R.id.menu)
         val playbutton = findViewById<LottieAnimationView>(R.id.playbuton)
         val playbuton = findViewById<TextView>(R.id.textView9)
-        val saludo = findViewById<TextView>(R.id.textView3)
         val profile = findViewById<ImageView>(R.id.imageView4)
 
-        //Categorías
+        // Botones a sección informativa
         val sciencebtn = findViewById<LinearLayout>(R.id.Science)
 
 
@@ -83,14 +82,17 @@ class MainActivity : MainClass() {
 
                     }
                     if (it.nickname.isNotEmpty()) {
-                        saludo.text = "Bienvenido, ${it.nickname}"
+                        binding.textView3.text = "Bienvenido, ${it.nickname}"
 
 
                     } else {
                         if ((it.name.isNotEmpty())){
-                            saludo.text = "Bienvenido, ${it.name}"
+                            binding.textView3.text = "Bienvenido, ${it.name}"
 
                         }
+                    }
+                    if(it.puntuation != null){
+                        binding.puntuation.text = it.puntuation.toString()
                     }
 
 
@@ -128,7 +130,6 @@ class MainActivity : MainClass() {
 
         binding.apply {
 
-            //Controladores
             menu.setItemSelected(R.id.Home)
 
         menu.setOnItemSelectedListener { if (it == R.id.Profile) startActivity(Intent(this@MainActivity, ProfileUserActivity::class.java)) }
@@ -137,6 +138,7 @@ class MainActivity : MainClass() {
                 playbutton.playAnimation()
                 val handler = Handler(Looper.getMainLooper())
                 handler.postDelayed({
+                    queue()
 
                     val intent = Intent(this@MainActivity, QuizActivity::class.java)
                     intent.putParcelableArrayListExtra("list", ArrayList(question))
@@ -162,43 +164,43 @@ class MainActivity : MainClass() {
                 startActivity(intent)
             }
 
-
+            textView17.setOnClickListener{
+                startActivity(Intent(this@MainActivity, StatisticsActivity::class.java))
+            }
             }
 
     }
 
 
 
-
-   fun goProfile(username: String, email: String, apodo: String?){
-
-
-
     /*
-       val dialog = Dialog(this)
-       dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-       dialog.setCancelable(false)
-       dialog.setContentView(R.layout.activity_profile)
-       dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+     fun goProfile(username: String, email: String, apodo: String?){
 
 
 
-       val fragment = ProfileUserFragment()
-       val bundle = Bundle()
-       bundle.putString("nickname", username)
-       bundle.putString("correo", email)
-       bundle.putString("apodo", apodo)
-       fragment.arguments = bundle
 
-       val transaction = supportFragmentManager.beginTransaction()
-       transaction.replace(R.id.frame_container, fragment) // Reemplaza "fragment_container" con el ID de tu contenedor de fragmentos
-       transaction.addToBackStack(null) // Opcional, para agregar la transacción al back stack
-       transaction.commit()
-*/
+         val dialog = Dialog(this)
+         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+         dialog.setCancelable(false)
+         dialog.setContentView(R.layout.activity_profile)
+         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+
+
+         val fragment = ProfileUserFragment()
+         val bundle = Bundle()
+         bundle.putString("nickname", username)
+         bundle.putString("correo", email)
+         bundle.putString("apodo", apodo)
+         fragment.arguments = bundle
+
+         val transaction = supportFragmentManager.beginTransaction()
+         transaction.replace(R.id.frame_container, fragment) // Reemplaza "fragment_container" con el ID de tu contenedor de fragmentos
+         transaction.addToBackStack(null) // Opcional, para agregar la transacción al back stack
+         transaction.commit()
+
 
     }
-
-/*
     fun FindMyUser(username: String, email: String, saludo:TextView, profile:ImageView){
 
 

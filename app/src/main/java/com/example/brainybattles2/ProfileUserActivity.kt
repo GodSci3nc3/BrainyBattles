@@ -18,8 +18,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.lifecycle.lifecycleScope
 import com.airbnb.lottie.LottieAnimationView
 import com.android.volley.Request
@@ -32,7 +30,6 @@ import com.ismaeldivita.chipnavigation.ChipNavigationBar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.json.JSONObject
 
 
 class ProfileUserActivity : MainClass() {
@@ -152,14 +149,13 @@ lifecycleScope.launch(Dispatchers.IO){
 
 
     }
-    goback.setOnClickListener { startActivity(Intent(this@ProfileUserActivity, MainActivity::class.java))
-        finish() }
+    goback.setOnClickListener {finish() }
 
     playbutton.setOnClickListener{
         playbutton.playAnimation()
         val handler = Handler(Looper.getMainLooper())
         handler.postDelayed({
-
+            queue()
             val intent = Intent(this@ProfileUserActivity, QuizActivity::class.java)
             intent.putParcelableArrayListExtra("list", ArrayList(question))
             startActivity(intent)
@@ -269,7 +265,7 @@ back.setOnClickListener {
 access.setOnClickListener {
    lifecycleScope.launch(Dispatchers.IO) {
        editprofile(username, email, pass.text.toString(), data, upgrade.text.toString())
-       changeMyInformation(data, upgrade.text.toString())
+       changeMyInformation_Strings(data, upgrade.text.toString())
    }
 
    dialog.dismiss()
@@ -500,7 +496,7 @@ queue.add(r)
 
                 if (avatarId != null) {
                     lifecycleScope.launch(Dispatchers.IO) {
-                        changeMyInformation("avatar", avatarId)
+                        changeMyInformation_Strings("avatar", avatarId)
                         dialog.dismiss()
                     }
                 }

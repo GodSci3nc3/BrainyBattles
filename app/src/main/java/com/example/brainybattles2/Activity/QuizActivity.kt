@@ -8,7 +8,10 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
 import android.view.Window
+import androidx.activity.enableEdgeToEdge
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.lottie.LottieAnimationView
@@ -35,6 +38,7 @@ class QuizActivity : MainClass(),QuestionAdapter.score {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding=ActivityQuizBinding.inflate(layoutInflater)
+        enableEdgeToEdge()
         setContentView(binding.root)
 
         val window: Window =this@QuizActivity.window
@@ -92,22 +96,27 @@ class QuizActivity : MainClass(),QuestionAdapter.score {
                 totalTimer()
 
                 rightArrow.setOnClickListener {
-                    //PRUEBA
-                    if(progressBar.progress==5){
+
+                    var perfectScore: Boolean
+                    if(progressBar.progress == 5) {
+                        perfectScore = allScore == progressBar.max * 5
+
                         val intent= Intent(this@QuizActivity, ScoreActivity::class.java)
                         intent.putExtra("Score",allScore)
+                        intent.putExtra("perfectScore",perfectScore)
                         startActivity(intent)
                         timer.cancel()
                         mediaplayer.stop()
                         finish()
                         return@setOnClickListener
                     }
+
                     position++
                     progressBar.progress=progressBar.progress+1
                     QuestionNumberTxt.text="Pregunta "+progressBar.progress+"/5"
                     QuestionTxt.text=recievedList[position].question
 
-                    val drawableResourceId:Int=binding.root.resources.getIdentifier(
+                    val drawableResourceId:Int = binding.root.resources.getIdentifier(
                         recievedList[position].picPath,
                         "mipmap",binding.root.context.packageName
                     )
@@ -125,7 +134,8 @@ class QuizActivity : MainClass(),QuestionAdapter.score {
                     if(mediaplayer.isPlaying){
                         mediaplayer.pause()
                         soundBtn.setImageResource(R.mipmap.ic_action_volume_off)
-                    }else{
+                    }
+                    else{
                         mediaplayer.start()
                         soundBtn.setImageResource(R.mipmap.ic_action_volume_up)
                     }
@@ -180,8 +190,8 @@ class QuizActivity : MainClass(),QuestionAdapter.score {
     }
 
     override fun amount(number: Int, clickedAnswer: String) {
-        allScore+=number
-        recievedList[position].clickedAnswer=clickedAnswer
+        allScore += number
+        recievedList[position].clickedAnswer = clickedAnswer
     }
 
     private fun totalTimer(){
@@ -189,14 +199,18 @@ class QuizActivity : MainClass(),QuestionAdapter.score {
 
             override fun onTick(millisUntilFinished: Long) {
 
-                binding.txtTime.setText(""+millisUntilFinished / 1000)
+                binding.txtTime.setText("" + millisUntilFinished / 1000)
 
             }
 
             override fun onFinish() {
+                var perfectScore: Boolean
+
+                perfectScore = allScore == binding.progressBar.max * 5
 
                 val intent = Intent(this@QuizActivity, ScoreActivity::class.java)
                 intent.putExtra("Score", allScore)
+                intent.putExtra("perfectScore", perfectScore)
                 startActivity(intent)
                 finish()
             }

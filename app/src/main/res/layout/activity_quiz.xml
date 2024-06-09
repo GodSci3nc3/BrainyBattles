@@ -43,7 +43,8 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:padding="8dp"
-                    android:src="@mipmap/back" />
+                    android:src="@mipmap/back"
+                    app:tint="#FFFFFF"/>
 
                 <TextView
                     android:id="@+id/textView"
@@ -83,7 +84,8 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:padding="5dp"
-                    android:src="@mipmap/ic_action_volume_up" />
+                    android:src="@mipmap/ic_action_volume_up"
+                    app:tint="#FFFFFF"/>
 
                 <TextView
                     android:id="@+id/txtTime"
@@ -145,8 +147,8 @@
 
                 <ImageView
                     android:id="@+id/selectedAvatar"
-                    android:layout_width="100dp"
-                    android:layout_height="120dp"
+                    android:layout_width="130dp"
+                    android:layout_height="140dp"
 
                     android:layout_margin="5dp"
 

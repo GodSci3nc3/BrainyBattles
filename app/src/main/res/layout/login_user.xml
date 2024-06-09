@@ -5,9 +5,9 @@
     android:id="@+id/backgroundview"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/login_register_background"
+    android:background="@drawable/categorias_buttons_background"
     android:transitionName="sharedBackgroundTransition"
-    tools:context=".RegisterUserActivity">
+    tools:context=".LoginUserActivity">
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/textView17"

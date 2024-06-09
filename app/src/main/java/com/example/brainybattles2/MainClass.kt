@@ -9,7 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
@@ -99,19 +101,34 @@ open class MainClass : AppCompatActivity() {
             email = preferences[stringPreferencesKey("email")].orEmpty(),
             nickname = preferences[stringPreferencesKey("nickname")].orEmpty(),
             picture = preferences[stringPreferencesKey("picture")].orEmpty(),
-            description = preferences[stringPreferencesKey("description")].orEmpty(),
-            avatar = preferences[stringPreferencesKey("avatar")].orEmpty()
+            avatar = preferences[stringPreferencesKey("avatar")].orEmpty(),
+            puntuation = preferences[intPreferencesKey("puntuation")]?: 0,
+            cpreguntas = preferences[intPreferencesKey("cpreguntas")]?: 0,
+            cquizz = preferences[intPreferencesKey("cquizz")] ?: 0
+
         )
     }
 
     fun getUser() = dataStore.data.map { preferences ->
+        val achievementStrings = preferences[stringSetPreferencesKey("achievements")]?.toSet() ?: emptySet()
+        val achievements = achievementStrings.mapNotNull { achievementString ->
+            try {
+                Achievement.valueOf(achievementString)
+            } catch (e: IllegalArgumentException) {
+                null
+            }
+        }.toSet()
+
         User(
             name = preferences[stringPreferencesKey("name")].orEmpty(),
             email = preferences[stringPreferencesKey("email")].orEmpty(),
             nickname = preferences[stringPreferencesKey("nickname")].orEmpty(),
             picture = preferences[stringPreferencesKey("picture")].orEmpty(),
-            description = preferences[stringPreferencesKey("description")].orEmpty(),
-            avatar = preferences[stringPreferencesKey("avatar")].orEmpty()
+            avatar = preferences[stringPreferencesKey("avatar")].orEmpty(),
+            puntuation = preferences[intPreferencesKey("puntuation")] ?: 0,
+            cpreguntas = preferences[intPreferencesKey("cpreguntas")] ?: 0,
+            cquizz = preferences[intPreferencesKey("cquizz")] ?: 0,
+            achievements = achievements
         )
     }
 
@@ -131,14 +148,41 @@ open class MainClass : AppCompatActivity() {
             preferences[stringPreferencesKey("name")] = username
             preferences[stringPreferencesKey("email")] = email
             preferences[stringPreferencesKey("avatar")] = "defaultAvatar"
+            preferences[intPreferencesKey("puntuation")] = 0
+            preferences[intPreferencesKey("cquizz")] = 0
+
         }
 
     }
 
-    suspend fun changeMyInformation(data: String, update: String) {
+    suspend fun changeMyInformation_Strings(data: String, update: String) {
         dataStore.edit { preferences ->
             preferences[stringPreferencesKey(data)] = update
         }
+    }
+
+
+    suspend fun changeMyPuntuations(data: String, update: Int) {
+        dataStore.edit { preferences ->
+            val currentValue = preferences[intPreferencesKey(data)] ?: 0
+            preferences[intPreferencesKey(data)] = currentValue + update
+        }
+    }
+
+    suspend fun unlockAchievement(achievement: Achievement) {
+        dataStore.edit { preferences ->
+            val currentAchievements = preferences[stringSetPreferencesKey("achievements")]?.toSet() ?: emptySet()
+            val updatedAchievements = currentAchievements + achievement.name
+
+            preferences[stringSetPreferencesKey("achievements")] = updatedAchievements
+        }
+    }
+
+    suspend fun hasAchievement(achievement: Achievement): Boolean {
+        val preferences = dataStore.data.first()
+        val achievements = preferences[stringSetPreferencesKey("achievements")]?.toSet() ?: emptySet()
+
+        return achievement.name in achievements
     }
 
 
@@ -147,7 +191,17 @@ open class MainClass : AppCompatActivity() {
         val email: String,
         val nickname: String,
         val picture: String,
-        val description: String,
-        val avatar: String
+        val puntuation: Int,
+        val cpreguntas: Int,
+        val cquizz: Int,
+        val avatar: String,
+        val achievements: Set<Achievement> = emptySet()
     )
+
+    enum class Achievement {
+        FIRST_PERFECT_SCORE,
+        FIRST_SCORE,
+        AVATAR_CHANGED,
+        // Aquí se pueden agregar logros, muchos más
+    }
 }
