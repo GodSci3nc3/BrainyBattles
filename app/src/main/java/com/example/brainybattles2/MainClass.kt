@@ -50,7 +50,7 @@ open class MainClass : AppCompatActivity() {
         for (i in 1..5) {
 
             val random = (1..84).random()
-            val url = "http://192.168.0.20/conexion_php/registro.php?id=$random"
+            val url = "http://192.168.85.12/conexion_php/registro.php?id=$random"
             val queue = Volley.newRequestQueue(this)
 
             val jsonObjectRequest = JsonObjectRequest(
@@ -104,7 +104,10 @@ open class MainClass : AppCompatActivity() {
             avatar = preferences[stringPreferencesKey("avatar")].orEmpty(),
             puntuation = preferences[intPreferencesKey("puntuation")]?: 0,
             cpreguntas = preferences[intPreferencesKey("cpreguntas")]?: 0,
-            cquizz = preferences[intPreferencesKey("cquizz")] ?: 0
+            cquizz = preferences[intPreferencesKey("cquizz")] ?: 0,
+            categoryScores = Category.values().associateWith { category ->
+                preferences[intPreferencesKey("score_${category.name}")] ?: 0
+            }
 
         )
     }
@@ -119,6 +122,10 @@ open class MainClass : AppCompatActivity() {
             }
         }.toSet()
 
+        val categoryScores = Category.values().associateWith { category ->
+            preferences[intPreferencesKey("score_${category.name}")] ?: 0
+        }
+
         User(
             name = preferences[stringPreferencesKey("name")].orEmpty(),
             email = preferences[stringPreferencesKey("email")].orEmpty(),
@@ -128,7 +135,8 @@ open class MainClass : AppCompatActivity() {
             puntuation = preferences[intPreferencesKey("puntuation")] ?: 0,
             cpreguntas = preferences[intPreferencesKey("cpreguntas")] ?: 0,
             cquizz = preferences[intPreferencesKey("cquizz")] ?: 0,
-            achievements = achievements
+            achievements = achievements,
+            categoryScores = categoryScores
         )
     }
 
@@ -185,6 +193,13 @@ open class MainClass : AppCompatActivity() {
         return achievement.name in achievements
     }
 
+    suspend fun updateCategoryScore(category: Category, score: Int) {
+        dataStore.edit { preferences ->
+            val currentScore = preferences[intPreferencesKey("score_${category.name}")] ?: 0
+            preferences[intPreferencesKey("score_${category.name}")] = currentScore + score
+        }
+    }
+
 
     data class User(
         val name: String,
@@ -195,7 +210,8 @@ open class MainClass : AppCompatActivity() {
         val cpreguntas: Int,
         val cquizz: Int,
         val avatar: String,
-        val achievements: Set<Achievement> = emptySet()
+        val achievements: Set<Achievement> = emptySet(),
+        val categoryScores: Map<Category, Int> = emptyMap()
     )
 
     enum class Achievement {
@@ -203,5 +219,18 @@ open class MainClass : AppCompatActivity() {
         FIRST_SCORE,
         AVATAR_CHANGED,
         // Aquí se pueden agregar logros, muchos más
+    }
+
+    enum class Category(val picPath: String) {
+        ARTE("t_1"),
+        CINE("t_2"),
+        DEPORTES("t_3"),
+        GEOGRAFIA("t_4"),
+        CIENCIA("t_5"),
+        MUSICA("t_6");
+
+        companion object {
+            fun fromPicPath(picPath: String): Category? = values().find { it.picPath == picPath }
+        }
     }
 }

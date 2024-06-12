@@ -459,6 +459,7 @@ queue.add(r)
 
         val back: ImageButton? = dialog.findViewById(R.id.button3)
         val avatars = listOf(
+
             //Avatares hombres
             dialog.findViewById<FrameLayout>(R.id.blue_men1),
             dialog.findViewById(R.id.greenmen1),

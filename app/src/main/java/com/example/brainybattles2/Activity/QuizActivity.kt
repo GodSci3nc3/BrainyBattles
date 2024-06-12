@@ -104,6 +104,7 @@ class QuizActivity : MainClass(),QuestionAdapter.score {
                         val intent= Intent(this@QuizActivity, ScoreActivity::class.java)
                         intent.putExtra("Score",allScore)
                         intent.putExtra("perfectScore",perfectScore)
+
                         startActivity(intent)
                         timer.cancel()
                         mediaplayer.stop()
@@ -192,6 +193,13 @@ class QuizActivity : MainClass(),QuestionAdapter.score {
     override fun amount(number: Int, clickedAnswer: String) {
         allScore += number
         recievedList[position].clickedAnswer = clickedAnswer
+
+        val category = recievedList[position].picPath?.let { Category.fromPicPath(it) }
+        if (category != null && number > 0) {
+            lifecycleScope.launch(Dispatchers.IO) {
+                updateCategoryScore(category, number)
+            }
+        }
     }
 
     private fun totalTimer(){
@@ -216,5 +224,6 @@ class QuizActivity : MainClass(),QuestionAdapter.score {
             }
         }.start()
     }
+    
 
 }

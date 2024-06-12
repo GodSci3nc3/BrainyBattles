@@ -5,30 +5,20 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.text.Layout
 import android.util.Log
 import android.view.Window
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.datastore.core.DataStore
-import androidx.datastore.dataStore
 import androidx.lifecycle.lifecycleScope
 import com.airbnb.lottie.LottieAnimationView
-import com.android.volley.Request.Method.GET
-import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.Volley
-import com.example.brainy_bat.Domain.QuestionModel
 import com.example.brainybattles2.Activity.QuizActivity
 import com.example.brainybattles2.databinding.ActivityMainBinding
 import com.ismaeldivita.chipnavigation.ChipNavigationBar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.json.JSONObject
 
 class MainActivity : MainClass() {
 
@@ -92,7 +82,7 @@ class MainActivity : MainClass() {
                         }
                     }
                     if(it.puntuation != null){
-                        binding.puntuation.text = it.puntuation.toString()
+                        binding.puntuation.text = it.puntuation.toString() + " pts"
                     }
 
 
