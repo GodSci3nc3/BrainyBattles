@@ -13,6 +13,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.example.brainy_bat.Adapter.QuestionAdapter
 import com.example.brainy_bat.Domain.QuestionModel
+import com.example.brainybattles2.MainActivity
 import com.example.brainybattles2.R
 import com.example.brainybattles2.databinding.ActivityQuizBinding
 
@@ -41,6 +42,8 @@ class QuizActivity : AppCompatActivity(),QuestionAdapter.score {
             backBtn.setOnClickListener{
                 mediaplayer.stop()
                 timer.cancel()
+                val intent= Intent(this@QuizActivity, MainActivity::class.java)
+                startActivity(intent)
                 finish()
             }
 
@@ -98,27 +101,6 @@ class QuizActivity : AppCompatActivity(),QuestionAdapter.score {
                         soundBtn.setImageResource(R.mipmap.ic_action_volume_up)
                     }
 
-
-
-                    /*if(progressBar.progress==1){
-
-                        return@setOnClickListener
-                    }
-                    position--
-                    progressBar.progress=progressBar.progress-1
-                    QuestionNumberTxt.text ="Pregunta "+progressBar.progress+"/5"
-                    QuestionTxt.text=recievedList[position].question
-
-                    val drawableResourceId:Int=binding.root.resources.getIdentifier(
-                        recievedList[position].picPath,
-                        "mipmap",binding.root.context.packageName
-                    )
-
-                    Glide.with(this@QuizActivity).load(drawableResourceId).centerCrop()
-                        .apply(RequestOptions.bitmapTransform(RoundedCorners(60)))
-                        .into(QuestionPic)
-
-                    loadAnswers()*/
                 }
         }
 
