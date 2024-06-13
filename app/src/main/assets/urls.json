@@ -4,5 +4,6 @@
   "modify": "http://192.168.0.20/BrainyBattles/modify.php",
   "delete": "http://192.168.0.20/BrainyBattles/delete.php",
   "show": "http://192.168.0.20/BrainyBattles/show.php",
-  "image_change": "http://192.168.0.20/BrainyBattles/image_change.php"
+  "image_change": "http://192.168.0.20/BrainyBattles/image_change.php",
+  "puntuation": "http://192.168.0.20/BrainyBattles/puntuation.php"
 }

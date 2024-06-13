@@ -2,13 +2,21 @@ package com.example.brainybattles2.Activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.android.volley.Request
+import com.android.volley.RequestQueue
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import com.example.brainybattles2.MainActivity
 import com.example.brainybattles2.MainClass
 import com.example.brainybattles2.databinding.ActivityScoreBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.json.JSONException
+import org.json.JSONObject
 
 class ScoreActivity : MainClass() {
 
@@ -46,6 +54,11 @@ class ScoreActivity : MainClass() {
 
 
         unlockAchievement(Achievement.FIRST_SCORE)
+
+            getUser().collect(){
+
+                puntuations(it.name, score)
+            }
         }
 
         binding.apply {
@@ -55,5 +68,32 @@ class ScoreActivity : MainClass() {
                 finish()
             }
         }
+
+
+    }
+    private fun puntuations(name: String, score: Int){
+        val url = getURL("puntuation")
+        val queue: RequestQueue = Volley.newRequestQueue(this)
+
+
+        val r = object :  StringRequest(Request.Method.POST,url, Response.Listener<String> { response ->
+
+        Toast.makeText(this,"Tu puntuación ha sido guardada", Toast.LENGTH_SHORT).show()
+
+
+        }, Response.ErrorListener { error ->
+            Toast.makeText(this,"Ha habido un error $error", Toast.LENGTH_LONG).show()
+        })
+        {
+            override fun getParams(): MutableMap<String, String>? {
+                val parameters = HashMap<String, String>()
+                parameters.put("nombre",name)
+                parameters.put("score",score.toString())
+
+                return parameters
+            }
+        }
+        queue.add(r)
+
     }
 }
