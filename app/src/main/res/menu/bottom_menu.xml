@@ -19,5 +19,13 @@
         app:cnb_iconColor="@color/white"
         app:cnb_backgroundColor="@color/selected_color_menu" />
 
+
+    <item
+        android:id="@+id/Statistics"
+        android:title="Statistics and achievements"
+        android:icon="@mipmap/trophy"
+        app:cnb_iconColor="@color/white"
+        app:cnb_backgroundColor="@color/selected_color_menu" />
+
 </menu>
 

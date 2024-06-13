@@ -50,7 +50,7 @@ open class MainClass : AppCompatActivity() {
         for (i in 1..5) {
 
             val random = (1..84).random()
-            val url = "http://192.168.85.12/conexion_php/registro.php?id=$random"
+            val url = "http://192.168.0.20/conexion_php/registro.php?id=$random"
             val queue = Volley.newRequestQueue(this)
 
             val jsonObjectRequest = JsonObjectRequest(

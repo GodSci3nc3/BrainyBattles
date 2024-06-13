@@ -24,9 +24,9 @@ class ScoreActivity : MainClass() {
         perfectScore = intent.getBooleanExtra("perfectScore", false)
 
         lifecycleScope.launch(Dispatchers.IO) {
+
             var data = "puntuation"
             var upgrade = score
-
             changeMyPuntuations(data, upgrade)
 
             data = "cpreguntas"

@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.airbnb.lottie.LottieAnimationView
 import com.example.brainybattles2.Activity.QuizActivity
+import com.example.brainybattles2.Activity.splashQuiz
 import com.example.brainybattles2.databinding.ActivityMainBinding
 import com.ismaeldivita.chipnavigation.ChipNavigationBar
 import kotlinx.coroutines.Dispatchers
@@ -43,9 +44,6 @@ class MainActivity : MainClass() {
         val playbutton = findViewById<LottieAnimationView>(R.id.playbuton)
         val playbuton = findViewById<TextView>(R.id.textView9)
         val profile = findViewById<ImageView>(R.id.imageView4)
-
-        // Botones a sección informativa
-        val sciencebtn = findViewById<LinearLayout>(R.id.Science)
 
 
         lifecycleScope.launch(Dispatchers.IO){
@@ -114,7 +112,6 @@ class MainActivity : MainClass() {
 
         }
 
-        sciencebtn.setOnClickListener { startActivity(Intent(this@MainActivity, InformationActivity::class.java)) }
 
 
 
@@ -122,17 +119,21 @@ class MainActivity : MainClass() {
 
             menu.setItemSelected(R.id.Home)
 
-        menu.setOnItemSelectedListener { if (it == R.id.Profile) startActivity(Intent(this@MainActivity, ProfileUserActivity::class.java)) }
+        menu.setOnItemSelectedListener {
+            if (it == R.id.Profile) startActivity(Intent(this@MainActivity, ProfileUserActivity::class.java))
+            if (it == R.id.Statistics) startActivity(Intent(this@MainActivity, StatisticsActivity::class.java))
+
+        }
 
             playbuton.setOnClickListener{
                 playbutton.playAnimation()
                 val handler = Handler(Looper.getMainLooper())
                 handler.postDelayed({
-                    queue()
+                    val i = Intent(this@MainActivity, splashQuiz::class.java).apply {
+                        putExtra("carga",0)
+                    }
+                    startActivity(i)
 
-                    val intent = Intent(this@MainActivity, QuizActivity::class.java)
-                    intent.putParcelableArrayListExtra("list", ArrayList(question))
-                    startActivity(intent)
                 }, 1500)
 
             }
@@ -141,22 +142,72 @@ class MainActivity : MainClass() {
                 val handler = Handler(Looper.getMainLooper())
                 handler.postDelayed({
 
-                    val intent = Intent(this@MainActivity, QuizActivity::class.java)
-                    intent.putParcelableArrayListExtra("list", ArrayList(question))
-                    startActivity(intent)
+                    val i = Intent(this@MainActivity, splashQuiz::class.java).apply {
+                        putExtra("carga",0)
+                    }
+                    startActivity(i)
+
                 }, 1500)
 
            }
 
             singleBtn.setOnClickListener {
-                val intent = Intent(this@MainActivity, QuizActivity::class.java)
-                intent.putParcelableArrayListExtra("list", ArrayList(question))
-                startActivity(intent)
+                val i = Intent(this@MainActivity, splashQuiz::class.java).apply {
+                    putExtra("carga",0)
+                }
+                startActivity(i)
+
             }
+
+            Social.setOnClickListener { startActivity(Intent(this@MainActivity, SocialActivity::class.java)) }
 
             textView17.setOnClickListener{
                 startActivity(Intent(this@MainActivity, StatisticsActivity::class.java))
             }
+
+            Art.setOnClickListener{
+                val i = Intent(this@MainActivity, splashQuiz::class.java).apply {
+                    putExtra("carga",1)
+                }
+                startActivity(i)
+            }
+
+            Cinema.setOnClickListener{
+                val i = Intent(this@MainActivity, splashQuiz::class.java).apply {
+                    putExtra("carga",2)
+                }
+                startActivity(i)
+            }
+
+            Sports.setOnClickListener{
+                val i = Intent(this@MainActivity, splashQuiz::class.java).apply {
+                    putExtra("carga",3)
+                }
+                startActivity(i)
+            }
+
+            Geography.setOnClickListener{
+                val i = Intent(this@MainActivity, splashQuiz::class.java).apply {
+                    putExtra("carga",4)
+                }
+                startActivity(i)
+            }
+
+            Science.setOnClickListener{
+                val i = Intent(this@MainActivity, splashQuiz::class.java).apply {
+                    putExtra("carga",5)
+                }
+                startActivity(i)
+            }
+
+            Music.setOnClickListener{
+                val i = Intent(this@MainActivity, splashQuiz::class.java).apply {
+                    putExtra("carga",6)
+                }
+                startActivity(i)
+            }
+
+
             }
 
     }

@@ -1,8 +1,8 @@
 {
-  "login": "http://192.168.85.12/BrainyBattles/login.php",
-  "inserction": "http://192.168.85.12/BrainyBattles/inserction.php",
-  "modify": "http://192.168.85.12/BrainyBattles/modify.php",
-  "delete": "http://192.168.85.12/BrainyBattles/delete.php",
-  "show": "http://192.168.85.12/BrainyBattles/show.php",
-  "image_change": "http://192.168.85.12/BrainyBattles/image_change.php"
+  "login": "http://192.168.0.20/BrainyBattles/login.php",
+  "inserction": "http://192.168.0.20/BrainyBattles/inserction.php",
+  "modify": "http://192.168.0.20/BrainyBattles/modify.php",
+  "delete": "http://192.168.0.20/BrainyBattles/delete.php",
+  "show": "http://192.168.0.20/BrainyBattles/show.php",
+  "image_change": "http://192.168.0.20/BrainyBattles/image_change.php"
 }

@@ -207,6 +207,8 @@ menu.setItemSelected(R.id.Profile)
 menu.setOnItemSelectedListener {
 
   if (it == R.id.Home) startActivity(Intent(this@ProfileUserActivity, MainActivity::class.java))
+  if (it == R.id.Statistics) startActivity(Intent(this@ProfileUserActivity, StatisticsActivity::class.java))
+
 }
 
 }
@@ -498,6 +500,7 @@ queue.add(r)
                 if (avatarId != null) {
                     lifecycleScope.launch(Dispatchers.IO) {
                         changeMyInformation_Strings("avatar", avatarId)
+                        unlockAchievement(Achievement.AVATAR_CHANGED)
                         dialog.dismiss()
                     }
                 }
