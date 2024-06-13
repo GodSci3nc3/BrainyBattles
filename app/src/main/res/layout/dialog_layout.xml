@@ -32,12 +32,6 @@
 
 
 
-        <ImageView
-            android:layout_width="220dp"
-            android:layout_height="220dp"
-
-            android:background="@mipmap/warning"
-            />
 
         <TextView
             android:id="@+id/notice"
@@ -49,14 +43,6 @@
             android:textSize="18sp"
             android:layout_margin="8dp"
             android:text="Mensaje de aviso y advertencia"/>
-
-        <EditText
-            android:id="@+id/editTextTextPassword"
-            android:layout_width="wrap_content"
-            android:layout_height="49dp"
-            android:ems="10"
-            android:hint="@string/pass"
-            android:inputType="textPassword" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -75,7 +61,7 @@
                 android:layout_marginBottom="4dp"
                 app:backgroundTint="@null"
                 android:background="@drawable/categorias_buttons_background"
-                android:text="Acceder"
+                android:text="Continuar"
                 android:textColor="@color/grey"
                 android:textAllCaps="false" />
 

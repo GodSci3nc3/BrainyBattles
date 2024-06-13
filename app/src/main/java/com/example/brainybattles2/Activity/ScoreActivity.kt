@@ -76,19 +76,19 @@ class ScoreActivity : MainClass() {
         val queue: RequestQueue = Volley.newRequestQueue(this)
 
 
-        val r = object :  StringRequest(Request.Method.POST,url, Response.Listener<String> { response ->
+        val r = object :  StringRequest(Method.POST,url, Response.Listener { response ->
 
         Toast.makeText(this,"Tu puntuación ha sido guardada", Toast.LENGTH_SHORT).show()
 
 
         }, Response.ErrorListener { error ->
-            Toast.makeText(this,"Ha habido un error $error", Toast.LENGTH_LONG).show()
+            Toast.makeText(this,"$error", Toast.LENGTH_LONG).show()
         })
         {
             override fun getParams(): MutableMap<String, String>? {
                 val parameters = HashMap<String, String>()
                 parameters.put("nombre",name)
-                parameters.put("score",score.toString())
+                parameters.put("score", score.toString())
 
                 return parameters
             }
