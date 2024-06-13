@@ -20,31 +20,50 @@ class splashQuiz: AppCompatActivity() {
     private lateinit var timer: CountDownTimer
     private lateinit var binding: SplashQuizBinding
 
+
     private fun queue(carga: Int){
+        var flag = false
+        var randompast = 0
 
         for (i in 1..5) {
             //Toast.makeText(this,carga, Toast.LENGTH_LONG).show()
             var random = 0
 
-            when (carga) {
-                // MEZCLA
-                0 -> random = (1..84).random();
-                // ARTE
-                1 -> random = (1..17).random()
-                // CINE
-                2 -> random = (18..30).random()
-                // DEPORTES
-                3 -> random = (31..42).random()
-                // GEOGRAFÍA
-                4 -> random = (43..57).random()
-                // CIENCIA
-                5 -> random = (58..72).random()
-                // MUSICA
-                6 -> random = (73..84).random()
-            }
+            do {
+                when (carga) {
+                    // MEZCLA
+                    0 -> random = (1..84).random();
+                    // ARTE
+                    1 -> random = (1..17).random()
+                    // CINE
+                    2 -> random = (18..30).random()
+                    // DEPORTES
+                    3 -> random = (31..42).random()
+                    // GEOGRAFÍA
+                    4 -> random = (43..57).random()
+                    // CIENCIA
+                    5 -> random = (58..72).random()
+                    // MUSICA
+                    6 -> random = (73..84).random()
+                }
 
 
-            val url = "http://192.168.0.20/conexion_php/registro.php?id=$random"
+
+                    if (randompast == random){
+                        flag = true
+                    }
+
+
+            } while (flag == true)
+
+            //Toast.makeText(this,"Past : "+randompast.toString(),Toast.LENGTH_LONG).show()
+            //Toast.makeText(this,"NUevo : "+random.toString(),Toast.LENGTH_LONG).show()
+
+            randompast = random
+
+
+
+            val url = "http://192.168.1.90/conexion_php/registro.php?id=$random"
             val queue = Volley.newRequestQueue(this)
 
             val jsonObjectRequest = JsonObjectRequest(
@@ -110,7 +129,7 @@ class splashQuiz: AppCompatActivity() {
             i.putParcelableArrayListExtra("list", ArrayList(question))
             startActivity(i)
             finish()
-        },1000)
+        },3000)
 
 
     }

@@ -114,8 +114,8 @@
 
                 <ImageView
                     android:id="@+id/selectedAvatar"
-                    android:layout_width="130dp"
-                    android:layout_height="140dp"
+                    android:layout_width="110dp"
+                    android:layout_height="120dp"
 
                     android:layout_margin="5dp"
 
@@ -151,7 +151,7 @@
                 android:textAlignment="center"
                 android:textStyle="bold"
                 android:fontFamily="@font/play"
-                android:textSize="35sp"
+                android:textSize="24sp"
                 android:textColor="@color/grey"
                 />
 
@@ -159,10 +159,10 @@
             <ImageView
                 android:id="@+id/QuestionPic"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="160dp"
                 android:src="@mipmap/usa"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="10dp"
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="24dp"
 

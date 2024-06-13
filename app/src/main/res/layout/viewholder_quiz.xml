@@ -15,7 +15,7 @@
     android:paddingEnd="16dp"
     android:text="Respuestas"
     android:textColor="?attr/titles"
-    android:textSize="23sp">
+    android:textSize="18sp">
 
 
 </TextView>
